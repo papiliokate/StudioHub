@@ -1,0 +1,280 @@
+:root {
+  --bg-color: #0d0f15;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  --rabbit-primary: #ff4b2b;
+  --rabbit-secondary: #ff416c;
+  
+  --shells-primary: #00d2ff;
+  --shells-secondary: #3a7bd5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent; /* Fixes blue flash on Android tap */
+}
+
+html {
+  -webkit-text-size-adjust: 100%; /* Fixes iOS text zooming explicitly on rotation */
+  touch-action: manipulation; /* Prevents 300ms delay on touch devices */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  min-height: -webkit-fill-available; /* Fixes iOS bottom bar layout shift */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Background Blobs */
+.blob {
+  position: absolute;
+  filter: blur(80px);
+  z-index: -1;
+  opacity: 0.6;
+  animation: float 10s infinite ease-in-out alternate;
+}
+
+.blob-1 {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(255,65,108,0.8) 0%, rgba(20,20,20,0) 70%);
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  bottom: -10%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(0,210,255,0.6) 0%, rgba(20,20,20,0) 70%);
+  animation-delay: -5s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(5%, 10%) scale(1.1); }
+}
+
+/* Main Container */
+.hub-container {
+  width: 100%;
+  max-width: 480px;
+  padding: 2rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.hub-header {
+  text-align: center;
+  animation: fadeInDown 0.8s ease-out forwards;
+}
+
+.hub-header .logo {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  animation: bounce 2s infinite ease-in-out alternate;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+.hub-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 0.5rem;
+}
+
+.hub-header h1 span {
+  background: linear-gradient(to right, var(--shells-primary), var(--rabbit-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hub-header p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+/* Links Container */
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.game-btn {
+  text-decoration: none;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: var(--glass-shadow);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.game-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 20px;
+  padding: 2px; /* border thickness */
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.rabbit-btn::before {
+  background: linear-gradient(135deg, var(--rabbit-primary), var(--rabbit-secondary));
+}
+
+.shells-btn::before {
+  background: linear-gradient(135deg, var(--shells-primary), var(--shells-secondary));
+}
+
+/* Stagger button animations */
+.rabbit-btn { animation-delay: 0.2s; }
+.shells-btn { animation-delay: 0.4s; }
+
+.game-btn:hover {
+  transform: translateY(-5px) scale(1.02);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.game-btn:hover::before {
+  opacity: 1;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.btn-content .icon {
+  font-size: 2.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: inset 0 2px 5px rgba(255,255,255,0.1);
+}
+
+.btn-content .text {
+  flex-grow: 1;
+}
+
+.btn-content h2 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.rabbit-btn:hover h2 {
+  color: var(--rabbit-secondary);
+}
+
+.shells-btn:hover h2 {
+  color: var(--shells-primary);
+}
+
+.btn-content p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.btn-content .arrow {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+}
+
+.game-btn:hover .arrow {
+  transform: translateX(5px);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeIn 1s ease-out 0.8s forwards;
+}
+
+footer p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-weight: 600;
+}
+
+footer a:hover {
+  color: var(--text-primary);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
