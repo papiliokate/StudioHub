@@ -35,7 +35,9 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: auto;
 }
 
 /* Animated Background Blobs */
