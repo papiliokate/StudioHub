@@ -114,7 +114,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById("vault-share").addEventListener("click", () => {
         const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Kiritimati', year: 'numeric', month: '2-digit', day: '2-digit' });
         const dateStr = formatter.format(new Date());
-        const text = `I am a Vault Master. 🗝️ The crypt has been breached.\n${dateStr}\nCan you decrypt the clues and unlock the secrets?\noops-games-hub.web.app/`;
+        const p = String.fromCharCode(65, 89, 82, 70, 73);
+        const text = `I am a Vault Master. 🗝️ The crypt has been breached.\n${dateStr}\nCan you decrypt the clues and unlock the secrets?\nhttps://oops-games-hub.web.app/\n\nProof: ${p}`;
         if (navigator.share) {
             navigator.share({ title: 'Master Vault Unlocked', text }).catch(e => {});
         } else {
