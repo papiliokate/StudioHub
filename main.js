@@ -39,6 +39,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log("Studio Hub initialized.");
   await loadHashes();
     
+  const carouselBtn = document.getElementById("carousel-start-btn");
+  if (carouselBtn) {
+      carouselBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const games = [
+              "https://go-rabbit-4af82.web.app",
+              "https://she-sells-sea-shells.web.app",
+              "https://smack-that-donkey.web.app",
+              "https://o-gox.web.app"
+          ];
+          const randomGame = games[Math.floor(Math.random() * games.length)];
+          window.location.href = `${randomGame}?carousel=true&played=`;
+      });
+  }
+  
   const c1 = document.getElementById("cypher-1");
   const c2 = document.getElementById("cypher-2");
   const c3 = document.getElementById("cypher-3");

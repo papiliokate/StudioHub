@@ -11,6 +11,9 @@
   
   --shells-primary: #00d2ff;
   --shells-secondary: #3a7bd5;
+  
+  --carousel-primary: #f59e0b;
+  --carousel-secondary: #d97706;
 }
 
 * {
@@ -166,7 +169,12 @@ body {
   background: linear-gradient(135deg, var(--shells-primary), var(--shells-secondary));
 }
 
+.carousel-btn::before {
+  background: linear-gradient(135deg, var(--carousel-primary), var(--carousel-secondary));
+}
+
 /* Stagger button animations */
+.carousel-btn { animation-delay: 0.1s; }
 .rabbit-btn { animation-delay: 0.2s; }
 .shells-btn { animation-delay: 0.4s; }
 
@@ -214,6 +222,10 @@ body {
 
 .shells-btn:hover h2 {
   color: var(--shells-primary);
+}
+
+.carousel-btn:hover h2 {
+  color: var(--carousel-primary);
 }
 
 .btn-content p {
