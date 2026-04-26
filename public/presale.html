@@ -52,7 +52,10 @@
     <div class="container">
         <h1>🎟️ Binge Puzzles Coming Soon!</h1>
         <p>We're putting the finishing touches on our Binge Mode feature! Soon, you'll be able to purchase additional puzzles to play as much as you want.</p>
-        <a href="/" class="back-btn">Return to Games Hub</a>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+            <a href="#" class="back-btn" id="mock-purchase-btn" style="display:none; background: #4CAF50;">Mock Purchase ($0.99)</a>
+            <a href="/" class="back-btn" id="back-btn">Return to Games Hub</a>
+        </div>
     </div>
 
     <!-- Firebase Analytics Tracking -->
@@ -75,6 +78,48 @@
         getAnalytics(app);
       } catch (e) {
         console.warn("Analytics tracking blocked or failed", e);
+      }
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const isCarousel = urlParams.get('carousel') === 'true';
+      const playedGames = urlParams.get('played') || '';
+      const returnUrl = urlParams.get('returnUrl');
+      
+      const mockPurchaseBtn = document.getElementById('mock-purchase-btn');
+      const backBtn = document.getElementById('back-btn');
+      
+      if (isCarousel) {
+          mockPurchaseBtn.style.display = 'block';
+          mockPurchaseBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              if (returnUrl) {
+                  // Append a param so the game knows to credit tokens if it wants to
+                  const separator = returnUrl.includes('?') ? '&' : '?';
+                  window.location.href = returnUrl + separator + 'mockPurchase=true';
+              } else {
+                  window.location.href = '/';
+              }
+          });
+          
+          backBtn.textContent = 'Cancel & Advance Carousel';
+          backBtn.href = '#';
+          backBtn.addEventListener('click', async (e) => {
+              e.preventDefault();
+              try {
+                  const res = await fetch('/carousel_config.json');
+                  const gamesList = await res.json();
+                  const playedArr = playedGames.split(',').filter(Boolean);
+                  const unplayed = gamesList.filter(g => !playedArr.includes(g.id));
+                  if (unplayed.length > 0) {
+                      const nextGame = unplayed[Math.floor(Math.random() * unplayed.length)];
+                      window.location.href = `${nextGame.url}?carousel=true&played=${playedGames}`;
+                  } else {
+                      window.location.href = '/';
+                  }
+              } catch(err) {
+                  window.location.href = '/';
+              }
+          });
       }
     </script>
 </body>
