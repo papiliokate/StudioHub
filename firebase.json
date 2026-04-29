@@ -2,6 +2,7 @@
   "hosting": {
     "target": "hub",
     "public": "dist",
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",
