@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       carouselBtn.addEventListener("click", (e) => {
           e.preventDefault();
           const games = [
-              "https://go-rabbit-4af82.web.app",
-              "https://she-sells-sea-shells.web.app",
-              "https://smack-that-donkey.web.app",
-              "https://o-gox.web.app"
+              "/go-rabbit",
+              "/she-sells-sea-shells",
+              "/smack-that-donkey",
+              "/o-gox"
           ];
           const randomGame = games[Math.floor(Math.random() * games.length)];
           window.location.href = `${randomGame}?carousel=true&played=`;

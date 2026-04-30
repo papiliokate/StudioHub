@@ -1,8 +1,9 @@
 [
-    { "id": "GR", "url": "https://go-rabbit-4af82.web.app" },
-    { "id": "SS", "url": "https://she-sells-sea-shells.web.app" },
-    { "id": "ST", "url": "https://smack-that-donkey.web.app" },
-    { "id": "OG", "url": "https://o-gox.web.app" },
-    { "id": "BB", "url": "https://bud-bud-game.web.app" },
-    { "id": "LW", "url": "https://lightning-words.web.app" }
+    { "id": "GR", "url": "/go-rabbit" },
+    { "id": "SS", "url": "/she-sells-sea-shells" },
+    { "id": "ST", "url": "/smack-that-donkey" },
+    { "id": "OG", "url": "/o-gox" },
+    { "id": "BB", "url": "/budbud" },
+    { "id": "LW", "url": "/lightning-words" },
+    { "id": "NIM", "url": "/nomisekili" }
 ]

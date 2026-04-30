@@ -189,11 +189,12 @@
         <div class="control-panel">
             <label for="game-select">1. Select a Game</label>
             <select id="game-select">
-                <option value="https://lightning-words.web.app/">Lightning Words</option>
-                <option value="https://smack-that-donkey.web.app/">Smack That Donkey</option>
-                <option value="https://bud-bud-game.web.app/">Bud Bud</option>
-                <option value="https://she-sells-sea-shells.web.app/">She Sells Sea Shells</option>
-                <option value="https://o-gox.web.app/">O-Gox</option>
+                <option value="https://oops-games.com/lightning-words">Lightning Words</option>
+                <option value="https://oops-games.com/smack-that-donkey">Smack That Donkey</option>
+                <option value="https://oops-games.com/budbud">Bud Bud</option>
+                <option value="https://oops-games.com/she-sells-sea-shells">She Sells Sea Shells</option>
+                <option value="https://oops-games.com/o-gox">O-Gox</option>
+                <option value="https://oops-games.com/nomisekili">Nomisekili</option>
             </select>
 
             <label>2. Copy your Embed Code</label>
@@ -268,6 +269,33 @@
 
         // Initialize
         updateEmbed();
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+
+        try {
+            const firebaseConfig = {
+                apiKey: "AIzaSyDgeMPAM9aKivOPLBuF_Fqm8uhedO5jeYc",
+                authDomain: "go-rabbit-4af82.firebaseapp.com",
+                projectId: "go-rabbit-4af82",
+                storageBucket: "go-rabbit-4af82.firebasestorage.app",
+                messagingSenderId: "746967187087",
+                appId: "1:746967187087:web:d2413f9cb46efae41cbafa",
+                measurementId: "G-BJLK9339LN"
+            };
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+            
+            // Explicitly log the page view to ensure it shows up by name
+            logEvent(analytics, 'page_view', {
+                page_title: document.title,
+                page_location: window.location.href,
+                page_path: '/publishers'
+            });
+        } catch (e) {
+            console.warn("Analytics error:", e);
+        }
     </script>
 </body>
 </html>

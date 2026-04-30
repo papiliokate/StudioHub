@@ -9,6 +9,13 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+      { "source": "/budbud/**", "destination": "/budbud/index.html" },
+      { "source": "/go-rabbit/**", "destination": "/go-rabbit/index.html" },
+      { "source": "/lightning-words/**", "destination": "/lightning-words/index.html" },
+      { "source": "/nomisekili/**", "destination": "/nomisekili/index.html" },
+      { "source": "/o-gox/**", "destination": "/o-gox/index.html" },
+      { "source": "/she-sells-sea-shells/**", "destination": "/she-sells-sea-shells/index.html" },
+      { "source": "/smack-that-donkey/**", "destination": "/smack-that-donkey/index.html" },
       {
         "source": "**",
         "destination": "/index.html"
