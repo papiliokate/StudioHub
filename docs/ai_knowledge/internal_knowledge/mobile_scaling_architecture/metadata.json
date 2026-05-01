@@ -1,0 +1,7 @@
+{
+  "summary": "Standardized Fixed-Resolution Scaling Architecture for HTML5 Canvas Games. Explains how to use a fixed logical resolution (e.g., 450x800) and CSS transforms to scale games uniformly across all mobile devices, avoiding flexbox viewport bugs. Includes pointer coordinate normalization and DOM-to-Screen mapping.",
+  "timestamp": "2026-04-24T16:11:00-05:00",
+  "references": [
+    "c:\\Users\\papil\\Documents\\OGox\\src\\main.js"
+  ]
+}

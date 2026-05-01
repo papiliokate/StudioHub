@@ -1,0 +1,9 @@
+{
+  "title": "New Game Integration Process",
+  "summary": "Exhaustive review of the platform identifying all necessary steps to seamlessly integrate a new game. Covers Studio Hub linking, CI/CD pipeline, automated daily video generation via Puppeteer and FFmpeg, Zapier distribution, standardized win screen UI, and Firebase Analytics integration.",
+  "references": [
+    "c:/Users/papil/Documents/StudioHub",
+    "c:/Users/papil/Documents/GoRabbit",
+    "c:/Users/papil/Documents/SheSellsSeaShells"
+  ]
+}
