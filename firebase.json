@@ -11,6 +11,7 @@
     "rewrites": [
       { "source": "/budbud/**", "destination": "/budbud/index.html" },
       { "source": "/go-rabbit/**", "destination": "/go-rabbit/index.html" },
+      { "source": "/sunny-day-maze/**", "destination": "/sunny-day-maze/index.html" },
       { "source": "/lightning-words/**", "destination": "/lightning-words/index.html" },
       { "source": "/nomisekili/**", "destination": "/nomisekili/index.html" },
       { "source": "/o-gox/**", "destination": "/o-gox/index.html" },

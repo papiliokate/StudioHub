@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 const games = [
     { dir: 'BudBud', path: 'budbud' },
     { dir: 'GoRabbit', path: 'go-rabbit' },
+    { dir: 'JumpMaze', path: 'sunny-day-maze' },
     { dir: 'LightningWords', path: 'lightning-words' },
     { dir: 'Nimosekili', path: 'nomisekili' },
     { dir: 'OGox', path: 'o-gox' },
