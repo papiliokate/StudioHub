@@ -98,6 +98,11 @@ When integrating a new game, you MUST update the central deployment pipeline:
 3. **Deploy the Ecosystem**: From the `StudioHub` directory, run `node deploy_ecosystem.js` to build all games with their relative `--base` paths, and then run `npx firebase-tools deploy --only hosting:hub` to push the entire unified platform to production.
 4. **Standalone Deployments**: The individual game repositories (e.g., `.github/workflows/daily_video.yml`) will continue to deploy to their `.web.app` targets for social media video generation, but the main user-facing traffic will flow through the StudioHub's subdirectory deployment.
 
+## 11. Reward System Integration
+To ensure the cross-game streak and badge system remains accurate:
+1. **Update `TOTAL_GAMES_LIST`**: When integrating a new game, you MUST update the `TOTAL_GAMES_LIST` array inside `StudioHub/public/streak_manager.js` to include the new game's `path` (the directory name used in the URL, e.g., `'new-game'`). This ensures "The Completionist" badge requires the new game to be unlocked.
+2. **Inject Script**: Ensure the new game's `index.html` includes `<script src="/streak_manager.js"></script>` before its main script tag.
+
 ---
 > [!NOTE]
 > This guide is persistently stored as a Knowledge Item (`KI`) within the workspace. AI assistants will automatically read this whenever you discuss integrating a new game in future conversations!
