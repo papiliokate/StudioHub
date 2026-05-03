@@ -1,0 +1,36 @@
+name: Central Video Dispatcher
+
+on:
+  schedule:
+    - cron: '35 9 * * *'
+    - cron: '0 18 * * *'
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Randomly Select Game
+        id: select_game
+        run: |
+          REPOS=(
+            "papiliokate/BudBud"
+            "papiliokate/GoRabbit"
+            "papiliokate/LightningWords"
+            "papiliokate/Nimosekili"
+            "papiliokate/O-Gox"
+            "papiliokate/SheSellsSeaShells"
+            "papiliokate/SmackThatDonkey"
+            "papiliokate/SunnyDayMaze"
+          )
+          SELECTED=${REPOS[$(( $RANDOM % ${#REPOS[@]} ))]}
+          echo "Selected game: $SELECTED"
+          echo "target_repo=$SELECTED" >> $GITHUB_OUTPUT
+
+      - name: Trigger Daily Video Workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          repository: ${{ steps.select_game.outputs.target_repo }}
+          event-type: generate-daily-video
