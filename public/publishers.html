@@ -327,12 +327,35 @@
 
     <script>
         // Tab Logic
+        let waitingRoomTimeout;
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.target).classList.add('active');
+                
+                // Restart Waiting Room Demo
+                if (tab.dataset.target === 'tab-waiting' && window.OopsGames) {
+                    const demoContainer = document.getElementById('demo-waiting-container');
+                    demoContainer.innerHTML = '';
+                    clearTimeout(waitingRoomTimeout);
+                    OopsGames.startWaitingRoom({
+                        containerId: 'demo-waiting-container',
+                        clientId: 'portal_demo',
+                        onProceed: () => {
+                            document.getElementById('demo-waiting-container').innerHTML = "<h3 style='color: #10b981;'>Proceeded to App!</h3>";
+                        }
+                    });
+                    waitingRoomTimeout = setTimeout(() => {
+                        OopsGames.notifyTaskComplete();
+                    }, 5000);
+                }
+
+                // Restart CAPTCHA Demo
+                if (tab.dataset.target === 'tab-captcha') {
+                    updateCaptchaCode();
+                }
             });
         });
 
@@ -371,25 +394,19 @@
         }
         updateWaitingCode();
 
-        // Run the Waiting Room Live Demo
-        if (window.OopsGames) {
-            OopsGames.startWaitingRoom({
-                containerId: 'demo-waiting-container',
-                clientId: 'portal_demo',
-                onProceed: () => {
-                    document.getElementById('demo-waiting-container').innerHTML = "<h3 style='color: #10b981;'>Proceeded to App!</h3>";
-                }
-            });
-            setTimeout(() => {
-                OopsGames.notifyTaskComplete();
-            }, 5000);
-        }
+        // The Waiting Room Live Demo will now start when the tab is clicked.
 
         // Gamified CAPTCHA Logic
         function updateCaptchaCode() {
             const clientId = document.getElementById('client-id-captcha').value || 'YOUR_COMPANY';
             document.getElementById('embed-code-captcha').value = `<!-- 1. Embed the CAPTCHA widget -->\n<div style="width: 350px; height: 450px;">\n  <iframe src="https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=${clientId}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>\n</div>\n\n<!-- 2. Listen for completion telemetry -->\n<script>\n  window.addEventListener('message', (event) => {\n    // Verify origin in production!\n    if (event.data && event.data.type === 'oops_captcha_solved') {\n      const securityPayload = event.data;\n      console.log("Human verified in " + securityPayload.solveTimeMs + "ms");\n      // Enable your submit button here\n    }\n  });\n<\/script>`;
-            document.getElementById('preview-frame-captcha').src = `https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=${clientId}`;
+            const iframe = document.getElementById('preview-frame-captcha');
+            // Prevent reloading if we haven't actually clicked the tab yet
+            if (document.getElementById('tab-captcha').classList.contains('active')) {
+                iframe.src = `https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=${clientId}`;
+            } else {
+                iframe.src = "about:blank"; // Keep it unloaded while hidden
+            }
         }
         updateCaptchaCode();
     </script>
