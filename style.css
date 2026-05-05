@@ -23,15 +23,6 @@
   
   --budbud-primary: #c084fc;
   --budbud-secondary: #9333ea;
-  
-  --sunny-primary: #fde047;
-  --sunny-secondary: #eab308;
-  
-  --lightning-primary: #38bdf8;
-  --lightning-secondary: #0284c7;
-  
-  --nomisekili-primary: #fb7185;
-  --nomisekili-secondary: #e11d48;
 }
 
 * {
@@ -203,18 +194,6 @@ body {
   background: linear-gradient(135deg, var(--budbud-primary), var(--budbud-secondary));
 }
 
-.sunny-btn::before {
-  background: linear-gradient(135deg, var(--sunny-primary), var(--sunny-secondary));
-}
-
-.lightning-btn::before {
-  background: linear-gradient(135deg, var(--lightning-primary), var(--lightning-secondary));
-}
-
-.nomisekili-btn::before {
-  background: linear-gradient(135deg, var(--nomisekili-primary), var(--nomisekili-secondary));
-}
-
 /* Stagger button animations */
 .carousel-btn { animation-delay: 0.1s; }
 .rabbit-btn { animation-delay: 0.2s; }
@@ -280,18 +259,6 @@ body {
 
 .budbud-btn:hover h2 {
   color: var(--budbud-primary);
-}
-
-.sunny-btn:hover h2 {
-  color: var(--sunny-primary);
-}
-
-.lightning-btn:hover h2 {
-  color: var(--lightning-primary);
-}
-
-.nomisekili-btn:hover h2 {
-  color: var(--nomisekili-primary);
 }
 
 /* Grid Layout for Games */
