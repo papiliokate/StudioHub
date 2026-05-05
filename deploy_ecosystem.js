@@ -7,14 +7,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const games = [
-    { dir: 'BudBud', path: 'budbud' },
-    { dir: 'GoRabbit', path: 'go-rabbit' },
-    { dir: 'SunnyDayMaze', path: 'sunny-day-maze' },
-    { dir: 'LightningWords', path: 'lightning-words' },
-    { dir: 'Nimosekili', path: 'nomisekili' },
-    { dir: 'OGox', path: 'o-gox' },
-    { dir: 'SheSellsSeaShells', path: 'she-sells-sea-shells' },
-    { dir: 'SmackThatDonkey', path: 'smack-that-donkey' }
+    { dir: 'BudBud', repo: 'papiliokate/BudBud', path: 'budbud' },
+    { dir: 'GoRabbit', repo: 'papiliokate/GoRabbit', path: 'go-rabbit' },
+    { dir: 'SunnyDayMaze', repo: 'papiliokate/SunnyDayMaze', path: 'sunny-day-maze' },
+    { dir: 'LightningWords', repo: 'papiliokate/LightningWords', path: 'lightning-words' },
+    { dir: 'Nimosekili', repo: 'papiliokate/Nimosekili', path: 'nomisekili' },
+    { dir: 'OGox', repo: 'papiliokate/O-Gox', path: 'o-gox' },
+    { dir: 'SheSellsSeaShells', repo: 'papiliokate/SheSellsSeaShells', path: 'she-sells-sea-shells' },
+    { dir: 'SmackThatDonkey', repo: 'papiliokate/SmackThatDonkey', path: 'smack-that-donkey' }
 ];
 
 const workspaceRoot = path.resolve(__dirname, '..');
