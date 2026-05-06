@@ -56,4 +56,10 @@ for (const game of games) {
 }
 
 console.log('\n--- Build Complete ---');
-console.log('You can now run: firebase deploy --only hosting:hub');
+console.log('Deploying Ecosystem to Firebase Hosting...');
+try {
+    execSync('cmd /c "npx firebase-tools deploy --only hosting:hub"', { cwd: __dirname, stdio: 'inherit' });
+    console.log('Successfully deployed to Production!');
+} catch (e) {
+    console.error('Failed to deploy to Firebase:', e.message);
+}

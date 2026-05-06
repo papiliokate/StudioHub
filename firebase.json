@@ -24,6 +24,24 @@
     ],
     "headers": [
       {
+        "source": "/**/asmr/**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex"
+          }
+        ]
+      },
+      {
+        "source": "/**/relaxing_audio/**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex"
+          }
+        ]
+      },
+      {
         "source": "/carousel_config.json",
         "headers": [
           {

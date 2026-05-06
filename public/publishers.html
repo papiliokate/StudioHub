@@ -256,7 +256,7 @@
         <div class="preview-panel">
             <h3 style="margin-top: 0;">Live Preview</h3>
             <div class="iframe-wrapper">
-                <iframe id="preview-frame-blog" src="https://lightning-words.web.app/?mode=embed"></iframe>
+                <iframe id="preview-frame-blog" src="https://oops-games.com/lightning-words/?mode=embed"></iframe>
             </div>
         </div>
     </div>
@@ -312,8 +312,17 @@
         </div>
         <div class="preview-panel">
             <h3 style="margin-top: 0;">Live Preview</h3>
-            <div class="iframe-wrapper" style="height: 450px;">
-                <iframe id="preview-frame-captcha" src="https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=demo"></iframe>
+            <div style="background: white; padding: 20px; border-radius: 12px; color: black; width: 375px; text-align: center; display: flex; flex-direction: column; align-items: center; box-sizing: border-box;">
+                <h4 style="margin-top: 0; margin-bottom: 20px; font-size: 1.2rem;">Sign Up</h4>
+                <input type="email" placeholder="Enter email" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; background: white; color: black; font-family: 'Outfit', sans-serif;">
+                
+                <div id="captcha-iframe-wrapper" style="width: 100%; height: 350px; border-radius: 12px; overflow: hidden; border: 2px solid #e2e8f0; margin-bottom: 15px;">
+                    <iframe id="preview-frame-captcha" src="about:blank" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+                
+                <div id="captcha-success-msg" style="display: none; color: #10b981; font-weight: bold; margin-bottom: 15px; font-size: 1.1rem;">✅ Human Confirmed</div>
+                
+                <button id="captcha-submit-btn" disabled style="background: #ccc; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; width: 100%; cursor: not-allowed; font-family: 'Outfit', sans-serif; font-size: 1.1rem; transition: background 0.3s;">Submit</button>
             </div>
         </div>
     </div>
@@ -406,13 +415,45 @@
             const clientId = document.getElementById('client-id-captcha').value || 'YOUR_COMPANY';
             document.getElementById('embed-code-captcha').value = `<!-- 1. Embed the CAPTCHA widget -->\n<div style="width: 350px; height: 450px;">\n  <iframe src="https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=${clientId}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>\n</div>\n\n<!-- 2. Listen for completion telemetry -->\n<script>\n  window.addEventListener('message', (event) => {\n    // Verify origin in production!\n    if (event.data && event.data.type === 'oops_captcha_solved') {\n      const securityPayload = event.data;\n      console.log("Human verified in " + securityPayload.solveTimeMs + "ms");\n      // Enable your submit button here\n    }\n  });\n<\/script>`;
             const iframe = document.getElementById('preview-frame-captcha');
+            const iframeWrapper = document.getElementById('captcha-iframe-wrapper');
+            const successMsg = document.getElementById('captcha-success-msg');
+            const submitBtn = document.getElementById('captcha-submit-btn');
+
             // Prevent reloading if we haven't actually clicked the tab yet
             if (document.getElementById('tab-captcha').classList.contains('active')) {
+                // Reset UI state
+                if (iframeWrapper) iframeWrapper.style.display = 'block';
+                if (successMsg) successMsg.style.display = 'none';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.style.background = '#ccc';
+                    submitBtn.style.cursor = 'not-allowed';
+                }
                 iframe.src = `https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=${clientId}`;
             } else {
-                iframe.src = "about:blank"; // Keep it unloaded while hidden
+                if (iframe) iframe.src = "about:blank"; // Keep it unloaded while hidden
             }
         }
+        
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'oops_captcha_solved') {
+                const iframeWrapper = document.getElementById('captcha-iframe-wrapper');
+                const successMsg = document.getElementById('captcha-success-msg');
+                const submitBtn = document.getElementById('captcha-submit-btn');
+                
+                // Only update if the active tab is captcha
+                if (document.getElementById('tab-captcha') && document.getElementById('tab-captcha').classList.contains('active')) {
+                    if (iframeWrapper) iframeWrapper.style.display = 'none';
+                    if (successMsg) successMsg.style.display = 'block';
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.style.background = '#38bdf8';
+                        submitBtn.style.cursor = 'pointer';
+                    }
+                }
+            }
+        });
+
         updateCaptchaCode();
     </script>
     <script type="module">
