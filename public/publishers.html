@@ -3,181 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer Portal | Oops-Games B2B Tools</title>
-    <meta name="description" content="Embeddable HTML5 mini-games for Blog Engagement, SaaS Waiting Rooms, and Gamified CAPTCHAs." />
+    <title>Conversion.Business | Enterprise Engagement Platform</title>
+    <meta name="description" content="Embeddable HTML5 micro-experiences for SaaS Waiting Rooms, Gamified CAPTCHAs, and Blog Engagement." />
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Nunito:wght@700;900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800&display=swap');
       
       :root {
-          --bg-color: #0f172a;
-          --card-bg: #1e293b;
-          --text-main: #f8fafc;
-          --text-muted: #94a3b8;
-          --accent: #38bdf8;
-          --accent-hover: #0ea5e9;
-          --border: #334155;
+          --bg-base: #050505;
+          --bg-surface: #0f0f11;
+          --bg-card: #161618;
+          --text-primary: #ffffff;
+          --text-secondary: #a1a1aa;
+          --accent-primary: #3b82f6;
+          --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+          --border-color: rgba(255, 255, 255, 0.08);
+          --success: #10b981;
+          --font-sans: 'Inter', sans-serif;
+          --font-display: 'Outfit', sans-serif;
       }
+
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
-        font-family: 'Outfit', sans-serif;
-        background: var(--bg-color);
-        color: var(--text-main);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        padding: 40px 20px;
-        box-sizing: border-box;
+        font-family: var(--font-sans);
+        background-color: var(--bg-base);
+        color: var(--text-primary);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
       }
 
-      .header {
+      /* Navbar */
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 40px;
+          border-bottom: 1px solid var(--border-color);
+          background: rgba(5, 5, 5, 0.8);
+          backdrop-filter: blur(12px);
+          position: sticky;
+          top: 0;
+          z-index: 100;
+      }
+
+      .navbar-brand {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: 1.5rem;
+          letter-spacing: -0.5px;
+          background: var(--text-primary);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+      }
+      
+      .navbar-brand .dot {
+          color: var(--accent-primary);
+      }
+
+      .navbar-contact {
+          font-weight: 500;
+          color: var(--text-secondary);
+          text-decoration: none;
+          transition: color 0.2s;
+          font-size: 0.95rem;
+      }
+
+      .navbar-contact:hover {
+          color: var(--text-primary);
+      }
+
+      /* Hero */
+      .hero {
           text-align: center;
-          margin-bottom: 40px;
-          max-width: 800px;
+          padding: 80px 20px 60px;
+          max-width: 900px;
+          margin: 0 auto;
+          position: relative;
       }
 
-      h1 { 
-          font-family: 'Nunito', sans-serif; 
-          font-size: 3rem; 
-          margin-bottom: 10px;
-          background: linear-gradient(to right, #38bdf8, #818cf8);
+      .hero::before {
+          content: '';
+          position: absolute;
+          top: -100px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(0,0,0,0) 70%);
+          z-index: -1;
+          pointer-events: none;
+      }
+
+      .badge {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          background: rgba(59, 130, 246, 0.1);
+          border: 1px solid rgba(59, 130, 246, 0.2);
+          color: #60a5fa;
+          font-size: 0.85rem;
+          font-weight: 600;
+          margin-bottom: 24px;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+      }
+
+      .hero h1 { 
+          font-family: var(--font-display); 
+          font-size: 4rem; 
+          font-weight: 800;
+          line-height: 1.1;
+          margin: 0 0 24px 0;
+          letter-spacing: -1.5px;
+      }
+
+      .hero h1 span {
+          background: var(--accent-gradient);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
       }
 
-      .subtitle { 
-          font-size: 1.2rem; 
-          color: var(--text-muted); 
+      .hero p { 
+          font-size: 1.25rem; 
+          color: var(--text-secondary); 
           font-weight: 400; 
-          line-height: 1.6; 
+          max-width: 650px;
+          margin: 0 auto;
       }
 
+      /* Main Content Container */
+      .dashboard {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px 80px;
+      }
+
+      /* Tabs */
       .tabs {
           display: flex;
-          gap: 10px;
-          margin-bottom: 30px;
-          background: var(--card-bg);
-          padding: 10px;
-          border-radius: 12px;
-          border: 1px solid var(--border);
+          justify-content: center;
+          gap: 8px;
+          margin-bottom: 40px;
+          background: var(--bg-surface);
+          padding: 8px;
+          border-radius: 16px;
+          border: 1px solid var(--border-color);
+          width: fit-content;
+          margin-left: auto;
+          margin-right: auto;
       }
       
       .tab {
           padding: 12px 24px;
-          border-radius: 8px;
+          border-radius: 10px;
           cursor: pointer;
-          font-weight: 600;
-          color: var(--text-muted);
-          transition: all 0.2s;
+          font-weight: 500;
+          color: var(--text-secondary);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          font-size: 0.95rem;
+      }
+
+      .tab:hover {
+          color: var(--text-primary);
       }
       
       .tab.active {
-          background: rgba(56, 189, 248, 0.1);
-          color: var(--accent);
-          border: 1px solid rgba(56, 189, 248, 0.3);
+          background: var(--bg-card);
+          color: var(--text-primary);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+          border: 1px solid var(--border-color);
       }
 
       .tab-content {
           display: none;
-          width: 100%;
-          max-width: 1200px;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: opacity 0.4s ease, transform 0.4s ease;
       }
 
       .tab-content.active {
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
           gap: 40px;
-          flex-wrap: wrap;
-          justify-content: center;
+          opacity: 1;
+          transform: translateY(0);
       }
 
+      /* Control Panel */
       .control-panel {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 30px;
-          flex: 1;
-          min-width: 300px;
-          max-width: 600px;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-          height: fit-content;
+          background: var(--bg-surface);
+          border: 1px solid var(--border-color);
+          border-radius: 24px;
+          padding: 40px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+          position: relative;
+          overflow: hidden;
       }
 
-      .preview-panel {
-          flex: 1;
-          min-width: 350px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+      .control-panel::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--accent-gradient);
+          opacity: 0.5;
+      }
+
+      .panel-header h2 {
+          font-family: var(--font-display);
+          font-size: 2rem;
+          margin: 0 0 10px 0;
+      }
+
+      .panel-header p {
+          color: var(--text-secondary);
+          margin: 0 0 30px 0;
+      }
+
+      /* Form Elements */
+      .form-group {
+          margin-bottom: 24px;
       }
 
       label {
           display: block;
-          font-weight: 600;
-          margin-bottom: 10px;
-          color: var(--text-main);
-          font-size: 1.1rem;
+          font-weight: 500;
+          margin-bottom: 8px;
+          color: var(--text-primary);
+          font-size: 0.95rem;
+      }
+
+      .input-wrapper {
+          position: relative;
       }
 
       input[type="text"], select {
           width: 100%;
-          padding: 15px;
-          border-radius: 10px;
-          background: var(--bg-color);
-          border: 1px solid var(--border);
-          color: var(--text-main);
+          padding: 14px 16px;
+          border-radius: 12px;
+          background: var(--bg-base);
+          border: 1px solid var(--border-color);
+          color: var(--text-primary);
           font-size: 1rem;
-          font-family: 'Outfit', sans-serif;
-          margin-bottom: 20px;
-          box-sizing: border-box;
+          font-family: var(--font-sans);
+          transition: all 0.2s;
+          appearance: none;
       }
       
       input[type="text"]:focus, select:focus {
           outline: none;
-          border-color: var(--accent);
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      select {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a1a1aa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 16px center;
+          background-size: 16px;
+      }
+
+      .code-container {
+          position: relative;
+          margin-bottom: 24px;
       }
 
       textarea {
           width: 100%;
-          height: 150px;
-          padding: 15px;
-          border-radius: 10px;
-          background: #000;
-          border: 1px solid var(--border);
-          color: #10b981;
-          font-family: monospace;
-          font-size: 0.9rem;
-          resize: vertical;
-          box-sizing: border-box;
-          margin-bottom: 20px;
+          height: 180px;
+          padding: 20px;
+          border-radius: 12px;
+          background: #0a0a0a;
+          border: 1px solid var(--border-color);
+          color: #e2e8f0;
+          font-family: 'JetBrains Mono', monospace, Consolas;
+          font-size: 0.85rem;
+          line-height: 1.5;
+          resize: none;
       }
 
       .copy-btn {
-          background: var(--accent);
-          color: white;
-          border: none;
-          padding: 15px 30px;
-          font-size: 1.1rem;
-          border-radius: 10px;
-          font-weight: 700;
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: rgba(255,255,255,0.1);
+          color: var(--text-primary);
+          border: 1px solid rgba(255,255,255,0.1);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          border-radius: 6px;
+          font-weight: 500;
           cursor: pointer;
-          width: 100%;
-          transition: background 0.2s;
-          font-family: 'Outfit', sans-serif;
+          transition: all 0.2s;
+          backdrop-filter: blur(4px);
       }
 
       .copy-btn:hover {
-          background: var(--accent-hover);
+          background: rgba(255,255,255,0.15);
       }
 
-      .iframe-wrapper {
+      /* Perks */
+      .perks-list {
+          margin-top: 30px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+      }
+      
+      .perk-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+          background: rgba(255,255,255,0.02);
+          padding: 16px;
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.03);
+      }
+      
+      .perk-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: rgba(59, 130, 246, 0.1);
+          color: var(--accent-primary);
+          border-radius: 10px;
+          font-size: 1.2rem;
+          flex-shrink: 0;
+      }
+
+      .perk-text h4 {
+          margin: 0 0 4px 0;
+          font-size: 0.95rem;
+          color: var(--text-primary);
+      }
+
+      .perk-text p {
+          margin: 0;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+      }
+
+      /* Preview Panel */
+      .preview-panel {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+      }
+
+      .preview-label {
+          position: absolute;
+          top: -20px;
+          background: var(--bg-surface);
+          border: 1px solid var(--border-color);
+          padding: 6px 16px;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          color: var(--text-secondary);
+          z-index: 10;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      }
+
+      .device-mockup {
           width: 375px;
           height: 667px;
-          border-radius: 20px;
+          border-radius: 32px;
           overflow: hidden;
-          box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-          border: 8px solid #334155;
-          background: #000;
+          box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
+          border: 12px solid #1a1a1a;
+          background: #ffffff;
           position: relative;
       }
 
@@ -185,253 +391,512 @@
           width: 100%;
           height: 100%;
           border: none;
+          background: transparent;
       }
       
-      .perks {
-          margin-top: 30px;
-          background: rgba(56, 189, 248, 0.1);
-          padding: 20px;
-          border-radius: 12px;
-          border: 1px solid rgba(56, 189, 248, 0.3);
-      }
-      
-      .perk-item {
+      /* Widget Previews */
+      .widget-demo-container {
+          width: 100%;
+          height: 100%;
           display: flex;
           align-items: center;
-          margin-bottom: 15px;
+          justify-content: center;
+          background: #f8fafc;
+          color: #0f172a;
+          padding: 20px;
       }
-      .perk-item:last-child { margin-bottom: 0; }
-      .perk-icon { margin-right: 15px; font-size: 1.5rem; }
-      
-      @media (max-width: 800px) {
-          .tab-content.active { flex-direction: column; align-items: center; }
-          .iframe-wrapper { width: 320px; height: 568px; }
-          .tabs { flex-wrap: wrap; justify-content: center; }
+
+      .captcha-demo {
+          width: 100%;
+          max-width: 320px;
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+          padding: 24px;
+          border: 1px solid #e2e8f0;
+      }
+
+      .form-title {
+          font-weight: 700;
+          font-size: 1.25rem;
+          margin: 0 0 20px 0;
+          font-family: var(--font-display);
+      }
+
+      .demo-input {
+          width: 100%;
+          padding: 12px;
+          border-radius: 8px;
+          border: 1px solid #cbd5e1;
+          margin-bottom: 16px;
+          font-family: var(--font-sans);
+          background: #f8fafc;
+      }
+
+      .demo-btn {
+          width: 100%;
+          padding: 12px;
+          border-radius: 8px;
+          border: none;
+          background: #cbd5e1;
+          color: white;
+          font-weight: 600;
+          cursor: not-allowed;
+          transition: all 0.3s;
+          font-family: var(--font-sans);
+      }
+
+      .demo-btn.active {
+          background: var(--accent-primary);
+          cursor: pointer;
+      }
+
+      /* Footer */
+      .footer {
+          border-top: 1px solid var(--border-color);
+          padding: 60px 20px;
+          text-align: center;
+          margin-top: 40px;
+      }
+
+      .footer-cta {
+          margin-bottom: 40px;
+      }
+
+      .footer-cta h3 {
+          font-family: var(--font-display);
+          font-size: 1.5rem;
+          margin: 0 0 10px 0;
+      }
+
+      .footer-cta p {
+          color: var(--text-secondary);
+      }
+
+      .primary-btn {
+          display: inline-block;
+          background: var(--text-primary);
+          color: var(--bg-base);
+          padding: 12px 28px;
+          border-radius: 8px;
+          font-weight: 600;
+          text-decoration: none;
+          margin-top: 16px;
+          transition: transform 0.2s;
+      }
+
+      .primary-btn:hover {
+          transform: translateY(-2px);
+      }
+
+      @media (max-width: 968px) {
+          .tab-content.active {
+              grid-template-columns: 1fr;
+          }
+          .hero h1 {
+              font-size: 3rem;
+          }
+          .device-mockup {
+              margin-top: 40px;
+          }
+      }
+
+      @media (max-width: 600px) {
+          .navbar {
+              padding: 16px 20px;
+          }
+          .navbar-brand {
+              font-size: 1.25rem;
+          }
+          .hero {
+              padding: 50px 20px 40px;
+          }
+          .hero h1 {
+              font-size: 2.25rem;
+          }
+          .hero p {
+              font-size: 1.05rem;
+          }
+          .dashboard {
+              padding: 0 16px 60px;
+          }
+          .tabs {
+              flex-wrap: wrap;
+              padding: 4px;
+              border-radius: 12px;
+          }
+          .tab {
+              padding: 10px 16px;
+              font-size: 0.9rem;
+              flex: 1 1 auto;
+              text-align: center;
+          }
+          .control-panel {
+              padding: 24px 20px;
+              border-radius: 20px;
+          }
+          .panel-header h2 {
+              font-size: 1.5rem;
+          }
+          .device-mockup {
+              width: 100%;
+              max-width: 375px;
+              height: auto;
+              aspect-ratio: 375 / 667;
+              border-width: 8px;
+              border-radius: 24px;
+          }
+          .captcha-demo {
+              padding: 16px;
+          }
+          #captcha-iframe-wrapper {
+              height: 300px;
+          }
       }
     </style>
 </head>
 <body>
     
-    <div class="header">
-        <h1>Oops-Games Developer Portal</h1>
-        <p class="subtitle">Supercharge your app or blog with our free, embeddable micro-games. Choose a solution below to get your code snippet instantly.</p>
-    </div>
-
-    <div class="tabs">
-        <div class="tab active" data-target="tab-blog">Blog Engagement</div>
-        <div class="tab" data-target="tab-waiting">SaaS Waiting Room</div>
-        <div class="tab" data-target="tab-captcha">Gamified CAPTCHA</div>
-    </div>
-
-    <!-- TAB: Blog Engagement -->
-    <div id="tab-blog" class="tab-content active">
-        <div class="control-panel">
-            <h2 style="margin-top: 0;">Increase Time-on-Page by 40%</h2>
-            <label for="game-select">1. Select a Game</label>
-            <select id="game-select">
-                <option value="https://oops-games.com/lightning-words/">Lightning Words</option>
-                <option value="https://oops-games.com/sunny-day-maze/">Sunny Day Maze</option>
-                <option value="https://oops-games.com/smack-that-donkey/">Smack That Donkey</option>
-                <option value="https://oops-games.com/budbud/">Bud Bud</option>
-                <option value="https://oops-games.com/she-sells-sea-shells/">She Sells Sea Shells</option>
-                <option value="https://oops-games.com/o-gox/">O-Gox</option>
-                <option value="https://oops-games.com/nomisekili/">Nomisekili</option>
-            </select>
-
-            <label>2. Copy your Embed Code</label>
-            <textarea id="embed-code-blog" readonly></textarea>
-            <button class="copy-btn" onclick="copyCode('embed-code-blog', this)">📋 Copy Code</button>
-            
-            <div class="perks">
-                <div class="perk-item">
-                    <span class="perk-icon">⏱️</span>
-                    <span><strong>Massive SEO Boost:</strong> Players stay to finish the puzzle, lowering bounce rate.</span>
-                </div>
-                <div class="perk-item">
-                    <span class="perk-icon">🔇</span>
-                    <span><strong>Silent Start:</strong> Complies with browser autoplay policies. No sudden sounds.</span>
-                </div>
-            </div>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            Conversion<span class="dot">.</span>Business
         </div>
-        <div class="preview-panel">
-            <h3 style="margin-top: 0;">Live Preview</h3>
-            <div class="iframe-wrapper">
-                <iframe id="preview-frame-blog" src="https://oops-games.com/lightning-words/?mode=embed"></iframe>
-            </div>
-        </div>
-    </div>
+        <a href="mailto:kate@oops-games.com" class="navbar-contact">Contact Sales</a>
+    </nav>
 
-    <!-- TAB: SaaS Waiting Room -->
-    <div id="tab-waiting" class="tab-content">
-        <div class="control-panel">
-            <h2 style="margin-top: 0;">Stop Losing Users to Loading Screens</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">Keep users engaged while your backend processes video renders, data exports, or AI generation.</p>
-            
-            <label for="client-id-waiting">1. Demo Key (Your Company Name for now)</label>
-            <input type="text" id="client-id-waiting" value="acme_corp" oninput="updateWaitingCode()">
+    <header class="hero">
+        <div class="badge">Production Ready Infrastructure</div>
+        <h1>Engage Users.<br/><span>Prevent Churn.</span></h1>
+        <p>Drop-in HTML5 micro-experiences for modern SaaS platforms. Enhance your waiting rooms, implement frictionless human verification, and boost blog engagement with a single line of code.</p>
+        <p style="margin-top: 16px; font-weight: 500; color: var(--text-primary);">Want a custom game for your business? <a href="mailto:kate@oops-games.com" style="color: var(--accent-primary); text-decoration: none;">Contact sales.</a></p>
+    </header>
 
-            <label>2. Copy SDK & Implementation</label>
-            <textarea id="embed-code-waiting" readonly></textarea>
-            <button class="copy-btn" onclick="copyCode('embed-code-waiting', this)">📋 Copy Code</button>
-            
-            <div class="perks">
-                <div class="perk-item">
-                    <span class="perk-icon">🧠</span>
-                    <span><strong>Context-Aware:</strong> The game pauses when your background task finishes.</span>
-                </div>
-            </div>
+    <main class="dashboard">
+        <div class="tabs">
+            <div class="tab active" data-target="tab-blog">Blog Engagement</div>
+            <div class="tab" data-target="tab-waiting">SaaS Waiting Room</div>
+            <div class="tab" data-target="tab-captcha">Gamified CAPTCHA</div>
         </div>
-        <div class="preview-panel">
-            <h3 style="margin-top: 0;">Live Demo</h3>
-            <div style="background: white; padding: 20px; border-radius: 12px; color: black; width: 375px; text-align: center;">
-                <p>Simulating a 5-second background export...</p>
-                <div id="demo-waiting-container" style="height: 400px; margin-top: 10px;"></div>
-            </div>
-        </div>
-    </div>
 
-    <!-- TAB: Gamified CAPTCHA -->
-    <div id="tab-captcha" class="tab-content">
-        <div class="control-panel">
-            <h2 style="margin-top: 0;">Lightweight Human Validation</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">Avoid the bloat of heavy server-side CAPTCHAs. Our gamified check provides frictionless, client-side validation that users actually enjoy, perfect for low-risk forms and rate-limiting.</p>
-            
-            <label for="client-id-captcha">1. Demo Key (Your Company Name for now)</label>
-            <input type="text" id="client-id-captcha" value="acme_corp" oninput="updateCaptchaCode()">
-
-            <label>2. Copy Implementation</label>
-            <textarea id="embed-code-captcha" readonly></textarea>
-            <button class="copy-btn" onclick="copyCode('embed-code-captcha', this)">📋 Copy Code</button>
-            
-            <div class="perks">
-                <div class="perk-item">
-                    <span class="perk-icon">⚡</span>
-                    <span><strong>No Backend Bloat:</strong> Lightweight client-side telemetry validation without complex server integration.</span>
-                </div>
-            </div>
-        </div>
-        <div class="preview-panel">
-            <h3 style="margin-top: 0;">Live Preview</h3>
-            <div style="background: white; padding: 20px; border-radius: 12px; color: black; width: 375px; text-align: center; display: flex; flex-direction: column; align-items: center; box-sizing: border-box;">
-                <h4 style="margin-top: 0; margin-bottom: 20px; font-size: 1.2rem;">Sign Up</h4>
-                <input type="email" placeholder="Enter email" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; background: white; color: black; font-family: 'Outfit', sans-serif;">
-                
-                <div id="captcha-iframe-wrapper" style="width: 100%; height: 350px; border-radius: 12px; overflow: hidden; border: 2px solid #e2e8f0; margin-bottom: 15px;">
-                    <iframe id="preview-frame-captcha" src="about:blank" style="width: 100%; height: 100%; border: none;"></iframe>
+        <!-- TAB: Blog Engagement -->
+        <div id="tab-blog" class="tab-content active">
+            <div class="control-panel">
+                <div class="panel-header">
+                    <h2>Increase Time-on-Page by 40%</h2>
+                    <p>Integrate our lightweight puzzles to keep visitors engaged, lowering bounce rates and drastically improving SEO signals.</p>
                 </div>
                 
-                <div id="captcha-success-msg" style="display: none; color: #10b981; font-weight: bold; margin-bottom: 15px; font-size: 1.1rem;">✅ Human Confirmed</div>
+                <div class="form-group">
+                    <label for="game-select">1. Select Experience</label>
+                    <div class="input-wrapper">
+                        <select id="game-select">
+                            <option value="https://oops-games.com/lightning-words/">Lightning Words</option>
+                            <option value="https://oops-games.com/sunny-day-maze/">Sunny Day Maze</option>
+                            <option value="https://oops-games.com/smack-that-donkey/">Smack That Donkey</option>
+                            <option value="https://oops-games.com/budbud/">Bud Bud</option>
+                            <option value="https://oops-games.com/she-sells-sea-shells/">She Sells Sea Shells</option>
+                            <option value="https://oops-games.com/o-gox/">O-Gox</option>
+                            <option value="https://oops-games.com/nomisekili/">Nomisekili</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Implementation Code</label>
+                    <div class="code-container">
+                        <button class="copy-btn" onclick="copyCode('embed-code-blog', this)">Copy snippet</button>
+                        <textarea id="embed-code-blog" readonly spellcheck="false"></textarea>
+                    </div>
+                </div>
                 
-                <button id="captcha-submit-btn" disabled style="background: #ccc; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; width: 100%; cursor: not-allowed; font-family: 'Outfit', sans-serif; font-size: 1.1rem; transition: background 0.3s;">Submit</button>
+                <div class="perks-list">
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>SEO Optimization</h4>
+                            <p>Extended dwell time directly improves search rankings.</p>
+                        </div>
+                    </div>
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>Silent Autoplay</h4>
+                            <p>Fully compliant with browser autoplay policies to avoid disruption.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <div class="preview-label">Live Integration</div>
+                <div class="device-mockup">
+                    <iframe id="preview-frame-blog" src="https://oops-games.com/lightning-words/?mode=embed" title="Blog Engagement Preview"></iframe>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="pricing-banner" style="margin-top: 50px; max-width: 800px; text-align: center; background: rgba(56, 189, 248, 0.05); padding: 25px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2);">
-        <h3 style="margin-top: 0; color: var(--accent); font-family: 'Nunito', sans-serif; font-size: 1.5rem;">Transparent Pricing</h3>
-        <p style="color: var(--text-muted); margin-bottom: 0; line-height: 1.6; font-size: 1.1rem;">Our tools are <strong>100% Free</strong> while in Beta. Once we launch out of Beta, expect simple usage-based pricing starting at fractions of a penny per session. No hidden fees, no enterprise traps.</p>
-    </div>
-    
-    <p style="text-align: center; margin-top: 40px; margin-bottom: 20px; color: var(--text-muted); font-size: 1.1rem;">
-        If you have questions or comments reach out to me at <a href="mailto:kate@oops-games.com" style="color: var(--accent); text-decoration: none;">kate@oops-games.com</a>.
-    </p>
 
-    <!-- Waiting Room SDK for the live demo -->
-    <script src="https://oops-games.com/sunny-day-maze/waiting-room.js"></script>
+        <!-- TAB: SaaS Waiting Room -->
+        <div id="tab-waiting" class="tab-content">
+            <div class="control-panel">
+                <div class="panel-header">
+                    <h2>Eliminate Loading Drop-offs</h2>
+                    <p>Retain users during intensive background tasks like video rendering, data exports, or AI generation sequences.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="client-id-waiting">1. Organization Key (Your Company Name for now)</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="client-id-waiting" value="acme_corp" oninput="updateWaitingCode()" placeholder="e.g. stripe_demo">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. SDK Integration</label>
+                    <div class="code-container">
+                        <button class="copy-btn" onclick="copyCode('embed-code-waiting', this)">Copy snippet</button>
+                        <textarea id="embed-code-waiting" readonly spellcheck="false"></textarea>
+                    </div>
+                </div>
+                
+                <div class="perks-list">
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>Event-Driven Architecture</h4>
+                            <p>The experience pauses instantly via API when your async task resolves.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <div class="preview-label">Demo Simulation</div>
+                <div class="device-mockup">
+                    <div class="widget-demo-container" style="flex-direction: column;">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0 0 8px 0; font-family: var(--font-display);">Processing Export</h3>
+                            <p style="margin: 0; color: #64748b; font-size: 0.9rem;">Simulating a 5-second backend operation...</p>
+                        </div>
+                        <div id="demo-waiting-container" style="width: 100%; height: 450px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Gamified CAPTCHA -->
+        <div id="tab-captcha" class="tab-content">
+            <div class="control-panel">
+                <div class="panel-header">
+                    <h2>Frictionless Validation</h2>
+                    <p>Replace heavy, frustrating reCAPTCHA flows with lightweight, client-side telemetry analysis masked as a micro-interaction.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="captcha-game-select">1. Select Experience</label>
+                    <div class="input-wrapper">
+                        <select id="captcha-game-select" onchange="updateCaptchaCode()">
+                            <option value="https://oops-games.com/sunny-day-maze/">Sunny Day Maze</option>
+                            <option value="https://oops-games.com/smack-that-donkey/">Smack That Donkey</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="client-id-captcha">2. Organization Key (Your Company Name for now)</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="client-id-captcha" value="acme_corp" oninput="updateCaptchaCode()" placeholder="e.g. auth0_tenant">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Component Integration</label>
+                    <div class="code-container">
+                        <button class="copy-btn" onclick="copyCode('embed-code-captcha', this)">Copy snippet</button>
+                        <textarea id="embed-code-captcha" readonly spellcheck="false"></textarea>
+                    </div>
+                </div>
+                
+                <div class="perks-list">
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>Zero Backend Bloat</h4>
+                            <p>Verify humanity purely through behavioral telemetry without rigid server dependencies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <div class="preview-label">Form Implementation</div>
+                <div class="device-mockup">
+                    <div class="widget-demo-container">
+                        <div class="captcha-demo">
+                            <h3 class="form-title">Create Account</h3>
+                            <input type="email" placeholder="work@email.com" class="demo-input">
+                            
+                            <div id="captcha-iframe-wrapper" style="width: 100%; height: 350px; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1; margin-bottom: 16px;">
+                                <iframe id="preview-frame-captcha" src="about:blank"></iframe>
+                            </div>
+                            
+                            <div id="captcha-success-msg" style="display: none; align-items: center; justify-content: center; gap: 8px; color: #10b981; font-weight: 600; margin-bottom: 16px; padding: 12px; background: #ecfdf5; border-radius: 8px; border: 1px solid #a7f3d0;">
+                                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Verification Complete
+                            </div>
+                            
+                            <button id="captcha-submit-btn" class="demo-btn">Complete Setup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-cta">
+            <h3>Ready to implement?</h3>
+            <p>Our infrastructure is entirely free during the public beta period.</p>
+            <a href="mailto:kate@oops-games.com" class="primary-btn">Talk to Engineering</a>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">&copy; 2026 Conversion.Business Platform. All rights reserved.</p>
+    </footer>
+
+    <!-- Waiting Room SDK for live demo (dynamically loaded) -->
 
     <script>
-        // Tab Logic
+        const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const oopsBaseUrl = isLocalHost ? '' : 'https://oops-games.com';
+
+        // Dynamically load the SDK for the live demo so we don't bleed domains in prod
+        const sdkScript = document.createElement('script');
+        sdkScript.src = `${oopsBaseUrl}/sunny-day-maze/waiting-room.js`;
+        document.head.appendChild(sdkScript);
+
+        // Tab Navigation
         let waitingRoomTimeout;
+        
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.target).classList.add('active');
                 
-                // Restart Waiting Room Demo
-                if (tab.dataset.target === 'tab-waiting' && window.OopsGames) {
-                    const demoContainer = document.getElementById('demo-waiting-container');
-                    demoContainer.innerHTML = '';
-                    clearTimeout(waitingRoomTimeout);
-                    OopsGames.startWaitingRoom({
-                        containerId: 'demo-waiting-container',
-                        clientId: 'portal_demo',
-                        onProceed: () => {
-                            document.getElementById('demo-waiting-container').innerHTML = "<h3 style='color: #10b981;'>Proceeded to App!</h3>";
+                // Initialize Waiting Room Demo
+                if (tab.dataset.target === 'tab-waiting') {
+                    const startWaitingRoomDemo = () => {
+                        if (!window.OopsGames) {
+                            // If SDK hasn't loaded yet, try again in 100ms
+                            setTimeout(startWaitingRoomDemo, 100);
+                            return;
                         }
-                    });
-                    waitingRoomTimeout = setTimeout(() => {
-                        OopsGames.notifyTaskComplete();
-                    }, 5000);
+                        
+                        const demoContainer = document.getElementById('demo-waiting-container');
+                        demoContainer.innerHTML = '';
+                        clearTimeout(waitingRoomTimeout);
+                        
+                        OopsGames.startWaitingRoom({
+                            containerId: 'demo-waiting-container',
+                            clientId: 'portal_demo',
+                            onProceed: () => {
+                                document.getElementById('demo-waiting-container').innerHTML = 
+                                    "<div style='height:100%; display:flex; align-items:center; justify-content:center; color:#10b981; font-weight:600; font-size:1.2rem; font-family: Inter, sans-serif;'>✓ Background Task Completed</div>";
+                            }
+                        });
+                        
+                        waitingRoomTimeout = setTimeout(() => {
+                            OopsGames.notifyTaskComplete();
+                        }, 5000);
+                    };
+                    
+                    startWaitingRoomDemo();
                 }
 
-                // Restart CAPTCHA Demo
+                // Initialize CAPTCHA Demo
                 if (tab.dataset.target === 'tab-captcha') {
                     updateCaptchaCode();
                 }
             });
         });
 
-        // Copy Code Function
+        // Copy functionality
         function copyCode(elementId, btn) {
             const el = document.getElementById(elementId);
             el.select();
             document.execCommand('copy');
+            
             const originalText = btn.innerText;
-            btn.innerText = "✅ Copied!";
-            btn.style.background = "#10b981";
+            btn.innerText = "✓ Copied";
+            btn.style.color = "#10b981";
+            btn.style.borderColor = "#10b981";
+            
             setTimeout(() => {
                 btn.innerText = originalText;
-                btn.style.background = "";
+                btn.style.color = "";
+                btn.style.borderColor = "";
             }, 2000);
         }
 
-        // Blog Engagement Logic
+        // Blog Embed Logic
         const gameSelect = document.getElementById('game-select');
         const embedCodeBlog = document.getElementById('embed-code-blog');
         const previewFrameBlog = document.getElementById('preview-frame-blog');
 
         function updateBlogCode() {
             const baseUrl = gameSelect.value;
-            const embedUrl = `${baseUrl}?mode=embed&ref=your_site`;
-            previewFrameBlog.src = `${baseUrl}?mode=embed`;
-            embedCodeBlog.value = `<iframe \n  src="${embedUrl}" \n  width="100%" \n  height="600" \n  style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"\n  title="Oops-Games Daily Puzzle"\n  allow="autoplay">\n</iframe>`;
+            const embedUrl = `${baseUrl}?mode=embed&ref=conversion_business`;
+            // Extract the path from the absolute URL for local testing of the preview
+            const localPreviewPath = new URL(baseUrl).pathname;
+            previewFrameBlog.src = `${oopsBaseUrl}${localPreviewPath}?mode=embed`;
+            embedCodeBlog.value = `<iframe \n  src="${embedUrl}" \n  width="100%" \n  height="600" \n  style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"\n  title="Conversion Widget"\n  allow="autoplay">\n</iframe>`;
         }
         gameSelect.addEventListener('change', updateBlogCode);
         updateBlogCode();
 
-        // SaaS Waiting Room Logic
+        // Waiting Room Logic
         function updateWaitingCode() {
             const clientId = document.getElementById('client-id-waiting').value || 'YOUR_COMPANY';
-            document.getElementById('embed-code-waiting').value = `<!-- 1. Include the SDK -->\n<script src="https://oops-games.com/sunny-day-maze/waiting-room.js"><\/script>\n\n<!-- 2. Create a container for the game -->\n<div id="game-container" style="width: 400px; height: 600px;"></div>\n\n<!-- 3. Start the game when your background task starts -->\n<script>\n  OopsGames.startWaitingRoom({\n    containerId: 'game-container',\n    clientId: '${clientId}',\n    onProceed: () => {\n      // Called when user clicks "Proceed to App"\n      document.getElementById('game-container').style.display = 'none';\n      alert("Moving to next screen!");\n    }\n  });\n\n  // 4. Notify the game when your background task is done\n  // OopsGames.notifyTaskComplete();\n<\/script>`;
+            document.getElementById('embed-code-waiting').value = `<!-- 1. Include SDK -->\n<script src="https://oops-games.com/sunny-day-maze/waiting-room.js"><\/script>\n\n<!-- 2. Mount Point -->\n<div id="conversion-container" style="width: 100%; height: 500px;"></div>\n\n<!-- 3. Initialization -->\n<script>\n  OopsGames.startWaitingRoom({\n    containerId: 'conversion-container',\n    clientId: '${clientId}',\n    onProceed: () => {\n      // Fired when user acknowledges completion\n      document.getElementById('conversion-container').style.display = 'none';\n      routeToNextStep();\n    }\n  });\n\n  // 4. Resolve State (Call this when background task finishes)\n  // OopsGames.notifyTaskComplete();\n<\/script>`;
         }
         updateWaitingCode();
 
-        // The Waiting Room Live Demo will now start when the tab is clicked.
-
-        // Gamified CAPTCHA Logic
+        // CAPTCHA Logic
         function updateCaptchaCode() {
             const clientId = document.getElementById('client-id-captcha').value || 'YOUR_COMPANY';
-            document.getElementById('embed-code-captcha').value = `<!-- 1. Embed the CAPTCHA widget -->\n<div style="width: 350px; height: 450px;">\n  <iframe src="https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=${clientId}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>\n</div>\n\n<!-- 2. Listen for completion telemetry -->\n<script>\n  window.addEventListener('message', (event) => {\n    // Verify origin in production!\n    if (event.data && event.data.type === 'oops_captcha_solved') {\n      const securityPayload = event.data;\n      console.log("Human verified in " + securityPayload.solveTimeMs + "ms");\n      // Enable your submit button here\n    }\n  });\n<\/script>`;
+            const gameSelectElement = document.getElementById('captcha-game-select');
+            const gameUrl = gameSelectElement ? gameSelectElement.value : 'https://oops-games.com/sunny-day-maze/';
+            
+            document.getElementById('embed-code-captcha').value = `<!-- 1. Widget Mount -->\n<div style="width: 100%; max-width: 400px; height: 400px;">\n  <iframe src="${gameUrl}?mode=captcha&clientId=${clientId}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>\n</div>\n\n<!-- 2. Event Listener -->\n<script>\n  window.addEventListener('message', (event) => {\n    if (event.data && event.data.type === 'oops_captcha_solved') {\n      const telemetry = event.data;\n      console.log("Verified in " + telemetry.solveTimeMs + "ms");\n      \n      // Proceed with form submission\n      enableSubmitButton();\n    }\n  });\n<\/script>`;
+            
             const iframe = document.getElementById('preview-frame-captcha');
             const iframeWrapper = document.getElementById('captcha-iframe-wrapper');
             const successMsg = document.getElementById('captcha-success-msg');
             const submitBtn = document.getElementById('captcha-submit-btn');
 
-            // Prevent reloading if we haven't actually clicked the tab yet
             if (document.getElementById('tab-captcha').classList.contains('active')) {
-                // Reset UI state
                 if (iframeWrapper) iframeWrapper.style.display = 'block';
                 if (successMsg) successMsg.style.display = 'none';
                 if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.style.background = '#ccc';
-                    submitBtn.style.cursor = 'not-allowed';
+                    submitBtn.classList.remove('active');
                 }
-                iframe.src = `https://oops-games.com/sunny-day-maze/?mode=captcha&clientId=${clientId}`;
+                // Extract the path from the absolute URL for local testing of the preview
+                const localPreviewPath = new URL(gameUrl).pathname;
+                if (isLocalHost && localPreviewPath.includes('smack-that-donkey')) {
+                    iframe.src = `http://localhost:5174/?mode=captcha&clientId=${clientId}`;
+                } else {
+                    iframe.src = `${oopsBaseUrl}${localPreviewPath}?mode=captcha&clientId=${clientId}`;
+                }
             } else {
-                if (iframe) iframe.src = "about:blank"; // Keep it unloaded while hidden
+                if (iframe) iframe.src = "about:blank";
             }
         }
         
@@ -441,14 +906,11 @@
                 const successMsg = document.getElementById('captcha-success-msg');
                 const submitBtn = document.getElementById('captcha-submit-btn');
                 
-                // Only update if the active tab is captcha
                 if (document.getElementById('tab-captcha') && document.getElementById('tab-captcha').classList.contains('active')) {
                     if (iframeWrapper) iframeWrapper.style.display = 'none';
-                    if (successMsg) successMsg.style.display = 'block';
+                    if (successMsg) successMsg.style.display = 'flex';
                     if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.style.background = '#38bdf8';
-                        submitBtn.style.cursor = 'pointer';
+                        submitBtn.classList.add('active');
                     }
                 }
             }
@@ -457,6 +919,7 @@
         updateCaptchaCode();
     </script>
     <script type="module">
+        // Firebase initialization (preserve from original)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
         try {

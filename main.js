@@ -36,6 +36,15 @@ async function loadHashes() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Domain Redirect for Publishers
+  const host = window.location.hostname;
+  if (host === 'conversion.business' || host === 'convesion.business') {
+      if (window.location.pathname === '/') {
+          window.location.href = '/publishers';
+          return;
+      }
+  }
+
   console.log("Studio Hub initialized.");
   await loadHashes();
     
