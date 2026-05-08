@@ -211,7 +211,7 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'oops-streak-modal';
-            modal.innerHTML = \`
+            modal.innerHTML = `
                 <div class="streak-content">
                     <div class="streak-badge-container">
                         <div class="streak-number" id="oops-streak-num"></div>
@@ -224,7 +224,7 @@
                         <button class="streak-btn btn-play" id="oops-btn-play">Let me play!</button>
                     </div>
                 </div>
-            \`;
+            `;
             document.body.appendChild(modal);
         }
 
