@@ -3,7 +3,7 @@ name: Central Video Dispatcher
 on:
   schedule:
     - cron: '35 9 * * *'
-    - cron: '0 22 * * *'
+    # - cron: '0 22 * * *' # Temporarily disabled for tonight
   workflow_dispatch:
 
 jobs:
