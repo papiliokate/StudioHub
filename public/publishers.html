@@ -891,9 +891,9 @@
                 // Extract the path from the absolute URL for local testing of the preview
                 const localPreviewPath = new URL(gameUrl).pathname;
                 if (isLocalHost && localPreviewPath.includes('smack-that-donkey')) {
-                    iframe.src = `http://localhost:5174/?mode=captcha&clientId=${clientId}`;
+                    iframe.src = `http://localhost:5174/?mode=captcha&clientId=${clientId}&_t=${Date.now()}`;
                 } else {
-                    iframe.src = `${oopsBaseUrl}${localPreviewPath}?mode=captcha&clientId=${clientId}`;
+                    iframe.src = `${oopsBaseUrl}${localPreviewPath}?mode=captcha&clientId=${clientId}&_t=${Date.now()}`;
                 }
             } else {
                 if (iframe) iframe.src = "about:blank";
