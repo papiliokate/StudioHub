@@ -1,0 +1,10 @@
+[
+    { "dir": "BudBud", "repo": "papiliokate/BudBud", "path": "budbud", "daily_video_target": true },
+    { "dir": "GoRabbit", "repo": "papiliokate/GoRabbit", "path": "go-rabbit", "daily_video_target": true },
+    { "dir": "SunnyDayMaze", "repo": "papiliokate/SunnyDayMaze", "path": "sunny-day-maze", "daily_video_target": true },
+    { "dir": "LightningWords", "repo": "papiliokate/LightningWords", "path": "lightning-words", "daily_video_target": true },
+    { "dir": "Nimosekili", "repo": "papiliokate/Nimosekili", "path": "nomisekili", "daily_video_target": true },
+    { "dir": "OGox", "repo": "papiliokate/O-Gox", "path": "o-gox", "daily_video_target": true },
+    { "dir": "SheSellsSeaShells", "repo": "papiliokate/SheSellsSeaShells", "path": "she-sells-sea-shells", "daily_video_target": true },
+    { "dir": "SmackThatDonkey", "repo": "papiliokate/SmackThatDonkey", "path": "smack-that-donkey", "daily_video_target": true }
+]

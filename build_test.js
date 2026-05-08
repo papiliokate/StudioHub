@@ -6,16 +6,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const games = [
-    { dir: 'BudBud', repo: 'papiliokate/BudBud', path: 'budbud' },
-    { dir: 'GoRabbit', repo: 'papiliokate/GoRabbit', path: 'go-rabbit' },
-    { dir: 'SunnyDayMaze', repo: 'papiliokate/SunnyDayMaze', path: 'sunny-day-maze' },
-    { dir: 'LightningWords', repo: 'papiliokate/LightningWords', path: 'lightning-words' },
-    { dir: 'Nimosekili', repo: 'papiliokate/Nimosekili', path: 'nomisekili' },
-    { dir: 'OGox', repo: 'papiliokate/O-Gox', path: 'o-gox' },
-    { dir: 'SheSellsSeaShells', repo: 'papiliokate/SheSellsSeaShells', path: 'she-sells-sea-shells' },
-    { dir: 'SmackThatDonkey', repo: 'papiliokate/SmackThatDonkey', path: 'smack-that-donkey' }
-];
+const ecosystemPath = path.resolve(__dirname, 'ecosystem.json');
+const games = JSON.parse(fs.readFileSync(ecosystemPath, 'utf8'));
 
 const workspaceRoot = path.resolve(__dirname, '..');
 const hubDistDir = path.resolve(__dirname, 'dist');

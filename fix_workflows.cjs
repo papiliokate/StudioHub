@@ -1,10 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const games = [
-    'BudBud', 'GoRabbit', 'LightningWords', 'Nimosekili', 
-    'OGox', 'SheSellsSeaShells', 'SmackThatDonkey', 'SunnyDayMaze'
-];
+const ecosystemPath = path.resolve(__dirname, 'ecosystem.json');
+const ecosystem = JSON.parse(fs.readFileSync(ecosystemPath, 'utf8'));
+const games = ecosystem.map(g => g.dir);
 
 games.forEach(game => {
     const wfPath = path.resolve(__dirname, '..', game, '.github', 'workflows', 'daily_video.yml');

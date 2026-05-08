@@ -93,7 +93,7 @@ To prevent regressions related to mobile UI clipping, "fat-finger" inaccuracies,
 ## 10. Subdirectory Ecosystem Architecture
 To maximize the SEO of `oops-games.com`, the platform utilizes a unified deployment architecture where all games are hosted as subdirectories of the main domain (e.g., `oops-games.com/new-game`).
 When integrating a new game, you MUST update the central deployment pipeline:
-1. **Update `deploy_ecosystem.js`**: Open `StudioHub/deploy_ecosystem.js` and add the new game's local repository folder name and its desired URL slug to the `games` array (e.g., `{ dir: 'NewGameRepo', path: 'new-game' }`).
+1. **Update `ecosystem.json`**: Open `StudioHub/ecosystem.json` and add the new game's local repository folder name, GitHub repo path, its desired URL slug, and the `daily_video_target` flag (e.g., `{ "dir": "NewGameRepo", "repo": "papiliokate/NewGameRepo", "path": "new-game", "daily_video_target": true }`).
 2. **Update `firebase.json`**: Open `StudioHub/firebase.json` and add a new rewrite rule for the game **before** the catch-all rule: `{ "source": "/new-game/**", "destination": "/new-game/index.html" }`.
 3. **Deploy the Ecosystem**: From the `StudioHub` directory, run `node deploy_ecosystem.js` to build all games with their relative `--base` paths, and then run `npx firebase-tools deploy --only hosting:hub` to push the entire unified platform to production.
 4. **Standalone Deployments**: The individual game repositories (e.g., `.github/workflows/daily_video.yml`) will continue to deploy to their `.web.app` targets for social media video generation, but the main user-facing traffic will flow through the StudioHub's subdirectory deployment.
