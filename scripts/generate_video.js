@@ -17,7 +17,7 @@ const randomBgm = bgmFiles[Math.floor(Math.random() * bgmFiles.length)];
 const BGM_PATH = path.resolve(bgmDir, randomBgm);
 console.log(`Selected BGM: ${randomBgm}`);
 const RAW_VIDEO = path.resolve('raw.mp4');
-const gameDirName = path.basename(path.resolve('.'));
+const gameDirName = process.env.GAME_DIR_NAME || path.basename(path.resolve('.'));
 const gameName = gameDirName.replace(/([A-Z])/g, ' $1').trim();
 const FINAL_VIDEO = path.resolve(`public/${gameName}.mp4`);
 
