@@ -3,25 +3,21 @@ name: Central Video Dispatcher
 on:
   schedule:
     - cron: '35 9 * * *'
-    # - cron: '0 22 * * *' # Temporarily disabled for tonight
   workflow_dispatch:
 
 jobs:
-  dispatch:
+  generate-video:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout StudioHub
         uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
         with:
-          node-version: 'latest'
+          path: StudioHub
 
       - name: Select Daily Game
         id: select_game
         run: |
-          REPOS=($(jq -r '.[] | select(.daily_video_target == true) | .repo' ecosystem.json))
+          REPOS=($(jq -r '.[] | select(.daily_video_target == true) | .repo' StudioHub/ecosystem.json))
           TOTAL=${#REPOS[@]}
           if [ $TOTAL -eq 0 ]; then
             echo "No games enabled for daily video!"
@@ -32,10 +28,70 @@ jobs:
           SELECTED=${REPOS[$INDEX]}
           echo "Selected game: $SELECTED"
           echo "target_repo=$SELECTED" >> $GITHUB_OUTPUT
+          
+          TARGET_PATH=$(jq -r ".[] | select(.repo == \"$SELECTED\") | .path" StudioHub/ecosystem.json)
+          echo "target_path=$TARGET_PATH" >> $GITHUB_OUTPUT
 
-      - name: Trigger Daily Video Workflow
-        uses: peter-evans/repository-dispatch@v3
+      - name: Checkout Target Game
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
           repository: ${{ steps.select_game.outputs.target_repo }}
-          event-type: generate-daily-video
+          path: TargetGame
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+      - name: Randomize Video Format
+        run: |
+          FORMATS=("standard" "fail" "interactive" "split" "glitch" "bad_donkey_silent" "bad_donkey_tts")
+          SELECTED_FORMAT=${FORMATS[$(( $RANDOM % 7 ))]}
+          echo "Selected Format: $SELECTED_FORMAT"
+          echo "FORMAT=$SELECTED_FORMAT" >> $GITHUB_ENV
+
+      - name: Install System Dependencies for Puppeteer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgbm-dev ffmpeg libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libasound2 libpangocairo-1.0-0 libxshmfence1
+
+      - name: Install Target Game Dependencies
+        working-directory: TargetGame
+        run: npm ci || npm install
+
+      - name: Generate Video
+        working-directory: TargetGame
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 720x1280x24" node ../StudioHub/scripts/generate_video.js
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Build Application
+        working-directory: TargetGame
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting
+        working-directory: TargetGame
+        run: npx firebase-tools deploy --only hosting:${{ steps.select_game.outputs.target_path }} --project go-rabbit-4af82 --token "${{ secrets.FIREBASE_TOKEN }}"
+
+      - name: Upload Video Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily_video
+          path: TargetGame/public/*.mp4
+          retention-days: 1
+
+      - name: Trigger Zapier Distribution
+        if: success()
+        working-directory: TargetGame
+        run: |
+          VIDEO_FILE=$(basename $(ls public/*.mp4 | head -n 1))
+          # The filename is the exact title as per KI
+          EXACT_TITLE="${VIDEO_FILE%.*}"
+          
+          # Exact exact title mapping per KI
+          TS=$(date +'%s')
+          
+          curl --fail --silent --show-error -X POST -H "Content-Type: application/json" \
+          -d "{\"video_url\": \"https://oops-games.com/$VIDEO_FILE?t=$TS\", \"text\": \"$EXACT_TITLE\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
+          https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/ || exit 1
