@@ -96,6 +96,7 @@ jobs:
           # Exact exact title mapping per KI
           TS=$(date +'%s')
           
+          TARGET_PATH="${{ steps.select_game.outputs.target_path }}"
           curl --fail --silent --show-error -X POST -H "Content-Type: application/json" \
-          -d "{\"video_url\": \"https://oops-games.com/$VIDEO_FILE?t=$TS\", \"text\": \"$EXACT_TITLE\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
+          -d "{\"video_url\": \"https://${TARGET_PATH}.web.app/$VIDEO_FILE?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
           https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/ || exit 1
