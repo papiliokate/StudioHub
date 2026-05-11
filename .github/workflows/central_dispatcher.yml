@@ -44,7 +44,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'latest'
+          node-version: '22'
 
       - name: Randomize Video Format
         run: |
@@ -58,6 +58,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb libgbm-dev ffmpeg libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libasound2t64 libpangocairo-1.0-0 libxshmfence1
 
+      - name: Install StudioHub Dependencies
+        working-directory: StudioHub
+        run: npm ci || npm install
+
       - name: Install Target Game Dependencies
         working-directory: TargetGame
         run: npm ci || npm install
@@ -65,6 +69,7 @@ jobs:
       - name: Generate Video
         working-directory: TargetGame
         run: |
+          rm -f public/*.mp4
           xvfb-run --auto-servernum --server-args="-screen 0 720x1280x24" node ../StudioHub/scripts/generate_video.js
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -89,13 +94,7 @@ jobs:
         if: success()
         working-directory: TargetGame
         run: |
-          VIDEO_FILE=$(basename $(ls public/*.mp4 | head -n 1))
-          # The filename is the exact title as per KI
-          EXACT_TITLE="${VIDEO_FILE%.*}"
-          
-          # Exact exact title mapping per KI
           TS=$(date +'%s')
-          
           TARGET_PATH="${{ steps.select_game.outputs.target_path }}"
           curl --fail --silent --show-error -X POST -H "Content-Type: application/json" \
           -d "{\"video_url\": \"https://${TARGET_PATH}.web.app/$VIDEO_FILE?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
