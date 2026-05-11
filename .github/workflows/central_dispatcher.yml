@@ -69,7 +69,6 @@ jobs:
       - name: Generate Video
         working-directory: TargetGame
         run: |
-          rm -f public/*.mp4
           xvfb-run --auto-servernum --server-args="-screen 0 720x1280x24" node ../StudioHub/scripts/generate_video.js
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -96,6 +95,7 @@ jobs:
         run: |
           TS=$(date +'%s')
           TARGET_PATH="${{ steps.select_game.outputs.target_path }}"
+          ENCODED_VIDEO=$(node -e "console.log(encodeURIComponent('$VIDEO_FILE'))")
           curl --fail --silent --show-error -X POST -H "Content-Type: application/json" \
-          -d "{\"video_url\": \"https://${TARGET_PATH}.web.app/$VIDEO_FILE?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
+          -d "{\"video_url\": \"https://${TARGET_PATH}.web.app/$ENCODED_VIDEO?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
           https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/ || exit 1
