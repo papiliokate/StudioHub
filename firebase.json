@@ -2,6 +2,7 @@
   "hosting": {
     "target": "hub",
     "public": "dist",
+    "predeploy": "node deploy_ecosystem.js",
     "cleanUrls": true,
     "ignore": [
       "firebase.json",
@@ -9,17 +10,112 @@
       "**/node_modules/**"
     ],
     "rewrites": [
-      { "source": "/budbud/**", "destination": "/budbud/index.html" },
-      { "source": "/go-rabbit/**", "destination": "/go-rabbit/index.html" },
-      { "source": "/sunny-day-maze/**", "destination": "/sunny-day-maze/index.html" },
-      { "source": "/lightning-words/**", "destination": "/lightning-words/index.html" },
-      { "source": "/nomisekili/**", "destination": "/nomisekili/index.html" },
-      { "source": "/o-gox/**", "destination": "/o-gox/index.html" },
-      { "source": "/she-sells-sea-shells/**", "destination": "/she-sells-sea-shells/index.html" },
-      { "source": "/smack-that-donkey/**", "destination": "/smack-that-donkey/index.html" },
+      {
+        "source": "/budbud/conversion",
+        "destination": "/budbud/conversion.html"
+      },
+      {
+        "source": "/go-rabbit/conversion",
+        "destination": "/go-rabbit/conversion.html"
+      },
+      {
+        "source": "/sunny-day-maze/conversion",
+        "destination": "/sunny-day-maze/conversion.html"
+      },
+      {
+        "source": "/lightning-words/conversion",
+        "destination": "/lightning-words/conversion.html"
+      },
+      {
+        "source": "/nomisekili/conversion",
+        "destination": "/nomisekili/conversion.html"
+      },
+      {
+        "source": "/o-gox/conversion",
+        "destination": "/o-gox/conversion.html"
+      },
+      {
+        "source": "/she-sells-sea-shells/conversion",
+        "destination": "/she-sells-sea-shells/conversion.html"
+      },
+
+      {
+        "source": "/budbud/**",
+        "destination": "/budbud/index.html"
+      },
+      {
+        "source": "/go-rabbit/**",
+        "destination": "/go-rabbit/index.html"
+      },
+      {
+        "source": "/sunny-day-maze/**",
+        "destination": "/sunny-day-maze/index.html"
+      },
+      {
+        "source": "/lightning-words/**",
+        "destination": "/lightning-words/index.html"
+      },
+      {
+        "source": "/nomisekili/**",
+        "destination": "/nomisekili/index.html"
+      },
+      {
+        "source": "/o-gox/**",
+        "destination": "/o-gox/index.html"
+      },
+      {
+        "source": "/she-sells-sea-shells/**",
+        "destination": "/she-sells-sea-shells/index.html"
+      },
+      {
+        "source": "/smack-that-donkey/**",
+        "destination": "/smack-that-donkey/index.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/smack-that-donkey/conversion",
+        "destination": "https://conversion-business-widgets.web.app/smack-that-donkey/",
+        "type": 301
+      },
+      {
+        "source": "/budbud/conversion",
+        "destination": "https://conversion-business-widgets.web.app/budbud/",
+        "type": 301
+      },
+      {
+        "source": "/go-rabbit/conversion",
+        "destination": "https://conversion-business-widgets.web.app/go-rabbit/",
+        "type": 301
+      },
+      {
+        "source": "/sunny-day-maze/conversion",
+        "destination": "https://conversion-business-widgets.web.app/sunny-day-maze/",
+        "type": 301
+      },
+      {
+        "source": "/lightning-words/conversion",
+        "destination": "https://conversion-business-widgets.web.app/lightning-words/",
+        "type": 301
+      },
+      {
+        "source": "/nomisekili/conversion",
+        "destination": "https://conversion-business-widgets.web.app/nomisekili/",
+        "type": 301
+      },
+      {
+        "source": "/o-gox/conversion",
+        "destination": "https://conversion-business-widgets.web.app/o-gox/",
+        "type": 301
+      },
+      {
+        "source": "/she-sells-sea-shells/conversion",
+        "destination": "https://conversion-business-widgets.web.app/she-sells-sea-shells/",
+        "type": 301
       }
     ],
     "headers": [

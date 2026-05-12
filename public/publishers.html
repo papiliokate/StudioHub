@@ -853,10 +853,10 @@
 
         function updateBlogCode() {
             const baseUrl = gameSelect.value;
-            const embedUrl = `${baseUrl}?mode=embed&ref=conversion_business`;
+            const embedUrl = `${baseUrl}conversion?mode=embed&ref=conversion_business`;
             // Extract the path from the absolute URL for local testing of the preview
             const localPreviewPath = new URL(baseUrl).pathname;
-            previewFrameBlog.src = `${oopsBaseUrl}${localPreviewPath}?mode=embed`;
+            previewFrameBlog.src = `${oopsBaseUrl}${localPreviewPath}conversion?mode=embed&_t=${Date.now()}`;
             embedCodeBlog.value = `<iframe \n  src="${embedUrl}" \n  width="100%" \n  height="600" \n  style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"\n  title="Conversion Widget"\n  allow="autoplay">\n</iframe>`;
         }
         gameSelect.addEventListener('change', updateBlogCode);
@@ -875,7 +875,7 @@
             const gameSelectElement = document.getElementById('captcha-game-select');
             const gameUrl = gameSelectElement ? gameSelectElement.value : 'https://oops-games.com/sunny-day-maze/';
             
-            document.getElementById('embed-code-captcha').value = `<!-- 1. Widget Mount -->\n<div style="width: 100%; max-width: 400px; height: 400px;">\n  <iframe src="${gameUrl}?mode=captcha&clientId=${clientId}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>\n</div>\n\n<!-- 2. Event Listener -->\n<script>\n  window.addEventListener('message', (event) => {\n    if (event.data && event.data.type === 'oops_captcha_solved') {\n      const telemetry = event.data;\n      console.log("Verified in " + telemetry.solveTimeMs + "ms");\n      \n      // Proceed with form submission\n      enableSubmitButton();\n    }\n  });\n<\/script>`;
+            document.getElementById('embed-code-captcha').value = `<!-- 1. Widget Mount -->\n<div style="width: 100%; max-width: 400px; height: 400px;">\n  <iframe src="${gameUrl}conversion?mode=captcha&clientId=${clientId}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>\n</div>\n\n<!-- 2. Event Listener -->\n<script>\n  window.addEventListener('message', (event) => {\n    if (event.data && event.data.type === 'oops_captcha_solved') {\n      const telemetry = event.data;\n      console.log("Verified in " + telemetry.solveTimeMs + "ms");\n      \n      // Proceed with form submission\n      enableSubmitButton();\n    }\n  });\n<\/script>`;
             
             const iframe = document.getElementById('preview-frame-captcha');
             const iframeWrapper = document.getElementById('captcha-iframe-wrapper');
@@ -891,9 +891,9 @@
                 // Extract the path from the absolute URL for local testing of the preview
                 const localPreviewPath = new URL(gameUrl).pathname;
                 if (isLocalHost && localPreviewPath.includes('smack-that-donkey')) {
-                    iframe.src = `http://localhost:5174/?mode=captcha&clientId=${clientId}&_t=${Date.now()}`;
+                    iframe.src = `http://localhost:5174/conversion?mode=captcha&clientId=${clientId}&_t=${Date.now()}`;
                 } else {
-                    iframe.src = `${oopsBaseUrl}${localPreviewPath}?mode=captcha&clientId=${clientId}&_t=${Date.now()}`;
+                    iframe.src = `${oopsBaseUrl}${localPreviewPath}conversion?mode=captcha&clientId=${clientId}&_t=${Date.now()}`;
                 }
             } else {
                 if (iframe) iframe.src = "about:blank";

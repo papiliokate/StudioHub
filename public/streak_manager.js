@@ -283,7 +283,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = \`oops-\${type}-badge.png\`;
+            a.download = `oops-${type}-badge.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -369,7 +369,7 @@
             // Queue popups
             const popups = [];
             if (showStreakPopup) {
-                popups.push(() => showModal('Daily Streak!', \`\${data.current_streak} days in a row!\`, data.current_streak.toString(), 'streak'));
+                popups.push(() => showModal('Daily Streak!', `${data.current_streak} days in a row!`, data.current_streak.toString(), 'streak'));
             }
             if (showTriplePopup) {
                 popups.push(() => showModal('Triple Threat!', 'Played 3 different games', '', 'triple'));

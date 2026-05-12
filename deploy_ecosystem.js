@@ -3,6 +3,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+if (process.env.SKIP_ECOSYSTEM_BUILD) {
+    console.log('Ecosystem build triggered from predeploy hook but already built. Skipping.');
+    process.exit(0);
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -50,7 +55,7 @@ for (const game of games) {
 console.log('\n--- Build Complete ---');
 console.log('Deploying Ecosystem to Firebase Hosting...');
 try {
-    execSync('cmd /c "npx firebase-tools deploy --only hosting:hub"', { cwd: __dirname, stdio: 'inherit' });
+    execSync('cmd /c "set SKIP_ECOSYSTEM_BUILD=1 && npx firebase-tools deploy --only hosting:hub"', { cwd: __dirname, stdio: 'inherit' });
     console.log('Successfully deployed to Production!');
 } catch (e) {
     console.error('Failed to deploy to Firebase:', e.message);
