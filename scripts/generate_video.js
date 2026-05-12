@@ -20,7 +20,11 @@ const RAW_VIDEO = path.resolve('raw.mp4');
 const gameDirName = process.env.GAME_DIR_NAME || path.basename(path.resolve('.'));
 const gameName = gameDirName.replace(/([A-Z])/g, ' $1').trim();
 const FINAL_VIDEO_BASENAME = `${gameName}.mp4`;
-const FINAL_VIDEO = path.resolve(`public/${FINAL_VIDEO_BASENAME}`);
+const artifactDir = path.resolve('video_artifacts');
+if (!fs.existsSync(artifactDir)) {
+    fs.mkdirSync(artifactDir, { recursive: true });
+}
+const FINAL_VIDEO = path.resolve(`video_artifacts/${FINAL_VIDEO_BASENAME}`);
 
 if (process.env.GITHUB_ENV) {
     fs.appendFileSync(process.env.GITHUB_ENV, `\nVIDEO_FILE=${FINAL_VIDEO_BASENAME}\nEXACT_TITLE=${gameName}\n`);

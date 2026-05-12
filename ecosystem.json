@@ -1,5 +1,5 @@
 [
-    { "dir": "BudBud", "repo": "papiliokate/BudBud", "path": "budbud", "daily_video_target": true },
+    { "dir": "BudBud", "repo": "papiliokate/BudBud", "path": "budbud", "firebase_target": "bud-bud-game", "daily_video_target": true },
     { "dir": "GoRabbit", "repo": "papiliokate/GoRabbit", "path": "go-rabbit", "daily_video_target": true },
     { "dir": "SunnyDayMaze", "repo": "papiliokate/SunnyDayMaze", "path": "sunny-day-maze", "daily_video_target": true },
     { "dir": "LightningWords", "repo": "papiliokate/LightningWords", "path": "lightning-words", "daily_video_target": true },

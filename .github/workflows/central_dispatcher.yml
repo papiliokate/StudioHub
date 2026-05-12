@@ -32,6 +32,9 @@ jobs:
           TARGET_PATH=$(jq -r ".[] | select(.repo == \"$SELECTED\") | .path" StudioHub/ecosystem.json)
           echo "target_path=$TARGET_PATH" >> $GITHUB_OUTPUT
           
+          FIREBASE_TARGET=$(jq -r ".[] | select(.repo == \"$SELECTED\") | .firebase_target // .path" StudioHub/ecosystem.json)
+          echo "firebase_target=$FIREBASE_TARGET" >> $GITHUB_OUTPUT
+          
           TARGET_DIR=$(jq -r ".[] | select(.repo == \"$SELECTED\") | .dir" StudioHub/ecosystem.json)
           echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
 
@@ -40,6 +43,7 @@ jobs:
         with:
           repository: ${{ steps.select_game.outputs.target_repo }}
           path: TargetGame
+          token: ${{ secrets.GH_PAT }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -80,22 +84,50 @@ jobs:
 
       - name: Deploy to Firebase Hosting
         working-directory: TargetGame
-        run: npx firebase-tools deploy --only hosting:${{ steps.select_game.outputs.target_path }} --project go-rabbit-4af82 --token "${{ secrets.FIREBASE_TOKEN }}"
+        run: |
+          rm -rf .firebase/
+          npx firebase-tools deploy --only hosting:${{ steps.select_game.outputs.firebase_target }} --project go-rabbit-4af82 --token "${{ secrets.FIREBASE_TOKEN }}"
 
       - name: Upload Video Artifact
         uses: actions/upload-artifact@v4
         with:
           name: daily_video
-          path: TargetGame/public/*.mp4
+          path: TargetGame/video_artifacts/*.mp4
           retention-days: 1
 
       - name: Trigger Zapier Distribution
         if: success()
         working-directory: TargetGame
         run: |
-          TS=$(date +'%s')
-          TARGET_PATH="${{ steps.select_game.outputs.target_path }}"
-          ENCODED_VIDEO=$(node -e "console.log(encodeURIComponent('$VIDEO_FILE'))")
-          curl --fail --silent --show-error -X POST -H "Content-Type: application/json" \
-          -d "{\"video_url\": \"https://${TARGET_PATH}.web.app/$ENCODED_VIDEO?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
-          https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/ || exit 1
+          node -e "
+            const ts = Math.floor(Date.now() / 1000);
+            const targetPath = '${{ steps.select_game.outputs.target_path }}';
+            const videoFile = process.env.VIDEO_FILE;
+            const exactTitle = process.env.EXACT_TITLE;
+            
+            if (!videoFile || !exactTitle) {
+              console.error('Missing video or title environment variables');
+              process.exit(1);
+            }
+            
+            const videoUrl = \`https://\${targetPath}.web.app/video_artifacts/\${encodeURIComponent(videoFile)}?t=\${ts}\`;
+            
+            const payload = {
+              video_url: videoUrl,
+              text: \`Play today's \${exactTitle} challenge at oops-games.com/\${targetPath}\`,
+              youtube_title: exactTitle,
+              target_channel: 'all'
+            };
+            
+            fetch('https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            }).then(res => {
+              if (!res.ok) throw new Error('Zapier webhook failed: ' + res.statusText);
+              console.log('Webhook sent successfully!');
+            }).catch(err => {
+              console.error(err);
+              process.exit(1);
+            });
+          "
