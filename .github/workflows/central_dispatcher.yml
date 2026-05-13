@@ -3,6 +3,7 @@ name: Central Video Dispatcher
 on:
   schedule:
     - cron: '35 9 * * *'
+    - cron: '35 21 * * *'
   workflow_dispatch:
 
 jobs:
@@ -24,7 +25,9 @@ jobs:
             exit 1
           fi
           DAY_OF_YEAR=$(date +%j)
-          INDEX=$(( (10#$DAY_OF_YEAR) % TOTAL ))
+          HOUR=$(date +%H)
+          OFFSET=$(( 10#$HOUR / 12 ))
+          INDEX=$(( (10#$DAY_OF_YEAR * 2 + OFFSET) % TOTAL ))
           SELECTED=${REPOS[$INDEX]}
           echo "Selected game: $SELECTED"
           echo "target_repo=$SELECTED" >> $GITHUB_OUTPUT
@@ -92,42 +95,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: daily_video
-          path: TargetGame/video_artifacts/*.mp4
+          path: TargetGame/public/*.mp4
           retention-days: 1
 
       - name: Trigger Zapier Distribution
         if: success()
         working-directory: TargetGame
         run: |
-          node -e "
-            const ts = Math.floor(Date.now() / 1000);
-            const targetPath = '${{ steps.select_game.outputs.target_path }}';
-            const videoFile = process.env.VIDEO_FILE;
-            const exactTitle = process.env.EXACT_TITLE;
-            
-            if (!videoFile || !exactTitle) {
-              console.error('Missing video or title environment variables');
-              process.exit(1);
-            }
-            
-            const videoUrl = \`https://\${targetPath}.web.app/video_artifacts/\${encodeURIComponent(videoFile)}?t=\${ts}\`;
-            
-            const payload = {
-              video_url: videoUrl,
-              text: \`Play today's \${exactTitle} challenge at oops-games.com/\${targetPath}\`,
-              youtube_title: exactTitle,
-              target_channel: 'all'
-            };
-            
-            fetch('https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            }).then(res => {
-              if (!res.ok) throw new Error('Zapier webhook failed: ' + res.statusText);
-              console.log('Webhook sent successfully!');
-            }).catch(err => {
-              console.error(err);
-              process.exit(1);
-            });
-          "
+          TS=$(date +'%s')
+          TARGET_PATH="${{ steps.select_game.outputs.target_path }}"
+          ENCODED_VIDEO=$(node -e "console.log(encodeURIComponent('$VIDEO_FILE'))")
+          curl --fail --silent --show-error -X POST -H "Content-Type: application/json" \
+          -d "{\"video_url\": \"https://${TARGET_PATH}.web.app/$ENCODED_VIDEO?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
+          https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/ || exit 1

@@ -20,11 +20,7 @@ const RAW_VIDEO = path.resolve('raw.mp4');
 const gameDirName = process.env.GAME_DIR_NAME || path.basename(path.resolve('.'));
 const gameName = gameDirName.replace(/([A-Z])/g, ' $1').trim();
 const FINAL_VIDEO_BASENAME = `${gameName}.mp4`;
-const artifactDir = path.resolve('video_artifacts');
-if (!fs.existsSync(artifactDir)) {
-    fs.mkdirSync(artifactDir, { recursive: true });
-}
-const FINAL_VIDEO = path.resolve(`video_artifacts/${FINAL_VIDEO_BASENAME}`);
+const FINAL_VIDEO = path.resolve(`public/${FINAL_VIDEO_BASENAME}`);
 
 if (process.env.GITHUB_ENV) {
     fs.appendFileSync(process.env.GITHUB_ENV, `\nVIDEO_FILE=${FINAL_VIDEO_BASENAME}\nEXACT_TITLE=${gameName}\n`);
@@ -41,6 +37,7 @@ async function main() {
     server.stderr.on('data', (data) => console.error("VITE ERROR:", data.toString()));
     server.stdout.on('data', (data) => console.log("VITE:", data.toString()));
 
+    try {
     console.log("Waiting for Vite dev server to boot...");
     let viteReady = false;
     for (let i = 0; i < 30; i++) {
@@ -141,7 +138,8 @@ async function main() {
         }
     }
 
-    const browser = await puppeteer.launch({
+    let browser;
+    browser = await puppeteer.launch({
         headless: 'new',
         args: [
             `--window-size=720,1280`,
@@ -194,23 +192,42 @@ async function main() {
         } catch(e) {}
     }
 
-    console.log("Recording... Waiting for duration to elapse.");
-    
-    if (isSplit) {
-        actualDuration = Math.floor(Math.random() * (25 - 15 + 1)) + 15;
-        console.log(`Split format selected. Recording for exactly ${actualDuration} seconds...`);
-        await sleep(actualDuration * 1000);
-    } else {
-        actualDuration = ttsDuration + 2; // Adding a 2-second pad so it doesn't abruptly cut off the millisecond the speech ends
-        console.log(`Standard format selected. Recording for exactly ${actualDuration} seconds (TTS duration + padding)...`);
-        await sleep(actualDuration * 1000);
-    }
+        console.log("Recording... Waiting for completion.");
+        
+        let minDurationMs = 15000;
+        if (isSplit) {
+            minDurationMs = (Math.floor(Math.random() * (25 - 15 + 1)) + 15) * 1000;
+            console.log(`Split format selected. Minimum duration: ${minDurationMs/1000}s`);
+        } else {
+            minDurationMs = (ttsDuration + 2) * 1000;
+            console.log(`Standard format selected. Minimum duration: ${minDurationMs/1000}s`);
+        }
 
-    console.log("Gameplay finished. Saving video...");
-    await recorder.stop();
-    
-    try { await browser.close(); } catch(e) {}
-    server.kill();
+        const startTime = Date.now();
+        while (true) {
+            const elapsed = Date.now() - startTime;
+            let isDone = false;
+            try {
+                isDone = await page.evaluate(() => window._VIDEO_RECORDING_DONE === true);
+            } catch(e) {}
+            
+            if (isDone && elapsed >= minDurationMs) {
+                console.log(`Game complete and minimum duration reached. Stopping at ${elapsed/1000}s`);
+                break;
+            }
+            
+            if (elapsed > 60000) {
+                console.log("Hard timeout reached (60s). Stopping recording.");
+                break;
+            }
+            
+            await sleep(500);
+        }
+        
+        actualDuration = Math.ceil((Date.now() - startTime) / 1000);
+
+        console.log("Gameplay finished. Saving video...");
+        await recorder.stop();
 
     console.log("Compositing TikTok video using FFmpeg...");
     
@@ -301,6 +318,10 @@ async function main() {
                 reject(err);
             });
     });
+    } finally {
+        try { if (browser) await browser.close(); } catch(e) {}
+        try { server.kill(); } catch(e) {}
+    }
 }
 
 main().then(() => {
