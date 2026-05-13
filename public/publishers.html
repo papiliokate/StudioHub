@@ -574,7 +574,6 @@
     <main class="dashboard">
         <div class="tabs">
             <div class="tab active" data-target="tab-blog">Blog Engagement</div>
-            <div class="tab" data-target="tab-waiting">SaaS Waiting Room</div>
             <div class="tab" data-target="tab-captcha">Gamified CAPTCHA</div>
         </div>
 
@@ -639,55 +638,7 @@
             </div>
         </div>
 
-        <!-- TAB: SaaS Waiting Room -->
-        <div id="tab-waiting" class="tab-content">
-            <div class="control-panel">
-                <div class="panel-header">
-                    <h2>Eliminate Loading Drop-offs</h2>
-                    <p>Retain users during intensive background tasks like video rendering, data exports, or AI generation sequences.</p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="client-id-waiting">1. Organization Key (Your Company Name for now)</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="client-id-waiting" value="acme_corp" oninput="updateWaitingCode()" placeholder="e.g. stripe_demo">
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label>2. SDK Integration</label>
-                    <div class="code-container">
-                        <button class="copy-btn" onclick="copyCode('embed-code-waiting', this)">Copy snippet</button>
-                        <textarea id="embed-code-waiting" readonly spellcheck="false"></textarea>
-                    </div>
-                </div>
-                
-                <div class="perks-list">
-                    <div class="perk-item">
-                        <div class="perk-icon">
-                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        </div>
-                        <div class="perk-text">
-                            <h4>Event-Driven Architecture</h4>
-                            <p>The experience pauses instantly via API when your async task resolves.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="preview-panel">
-                <div class="preview-label">Demo Simulation</div>
-                <div class="device-mockup">
-                    <div class="widget-demo-container" style="flex-direction: column;">
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <h3 style="margin: 0 0 8px 0; font-family: var(--font-display);">Processing Export</h3>
-                            <p style="margin: 0; color: #64748b; font-size: 0.9rem;">Simulating a 5-second backend operation...</p>
-                        </div>
-                        <div id="demo-waiting-container" style="width: 100%; height: 450px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- TAB: Gamified CAPTCHA -->
         <div id="tab-captcha" class="tab-content">
@@ -769,19 +720,11 @@
         <p style="color: var(--text-secondary); font-size: 0.9rem;">&copy; 2026 Conversion.Business Platform. All rights reserved.</p>
     </footer>
 
-    <!-- Waiting Room SDK for live demo (dynamically loaded) -->
-
     <script>
         const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         const oopsBaseUrl = isLocalHost ? '' : 'https://oops-games.com';
 
-        // Dynamically load the SDK for the live demo so we don't bleed domains in prod
-        const sdkScript = document.createElement('script');
-        sdkScript.src = `${oopsBaseUrl}/sunny-day-maze/waiting-room.js`;
-        document.head.appendChild(sdkScript);
-
         // Tab Navigation
-        let waitingRoomTimeout;
         
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -791,35 +734,7 @@
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.target).classList.add('active');
                 
-                // Initialize Waiting Room Demo
-                if (tab.dataset.target === 'tab-waiting') {
-                    const startWaitingRoomDemo = () => {
-                        if (!window.OopsGames) {
-                            // If SDK hasn't loaded yet, try again in 100ms
-                            setTimeout(startWaitingRoomDemo, 100);
-                            return;
-                        }
-                        
-                        const demoContainer = document.getElementById('demo-waiting-container');
-                        demoContainer.innerHTML = '';
-                        clearTimeout(waitingRoomTimeout);
-                        
-                        OopsGames.startWaitingRoom({
-                            containerId: 'demo-waiting-container',
-                            clientId: 'portal_demo',
-                            onProceed: () => {
-                                document.getElementById('demo-waiting-container').innerHTML = 
-                                    "<div style='height:100%; display:flex; align-items:center; justify-content:center; color:#10b981; font-weight:600; font-size:1.2rem; font-family: Inter, sans-serif;'>✓ Background Task Completed</div>";
-                            }
-                        });
-                        
-                        waitingRoomTimeout = setTimeout(() => {
-                            OopsGames.notifyTaskComplete();
-                        }, 5000);
-                    };
-                    
-                    startWaitingRoomDemo();
-                }
+
 
                 // Initialize CAPTCHA Demo
                 if (tab.dataset.target === 'tab-captcha') {
@@ -862,12 +777,7 @@
         gameSelect.addEventListener('change', updateBlogCode);
         updateBlogCode();
 
-        // Waiting Room Logic
-        function updateWaitingCode() {
-            const clientId = document.getElementById('client-id-waiting').value || 'YOUR_COMPANY';
-            document.getElementById('embed-code-waiting').value = `<!-- 1. Include SDK -->\n<script src="https://oops-games.com/sunny-day-maze/waiting-room.js"><\/script>\n\n<!-- 2. Mount Point -->\n<div id="conversion-container" style="width: 100%; height: 500px;"></div>\n\n<!-- 3. Initialization -->\n<script>\n  OopsGames.startWaitingRoom({\n    containerId: 'conversion-container',\n    clientId: '${clientId}',\n    onProceed: () => {\n      // Fired when user acknowledges completion\n      document.getElementById('conversion-container').style.display = 'none';\n      routeToNextStep();\n    }\n  });\n\n  // 4. Resolve State (Call this when background task finishes)\n  // OopsGames.notifyTaskComplete();\n<\/script>`;
-        }
-        updateWaitingCode();
+
 
         // CAPTCHA Logic
         function updateCaptchaCode() {
