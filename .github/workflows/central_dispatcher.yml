@@ -46,7 +46,7 @@ jobs:
         with:
           repository: ${{ steps.select_game.outputs.target_repo }}
           path: TargetGame
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.DISPATCH_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
