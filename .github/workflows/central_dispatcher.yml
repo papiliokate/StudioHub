@@ -106,5 +106,5 @@ jobs:
           TARGET_PATH="${{ steps.select_game.outputs.target_path }}"
           ENCODED_VIDEO=$(node -e "console.log(encodeURIComponent('$VIDEO_FILE'))")
           curl --fail --silent --show-error -X POST -H "Content-Type: application/json" \
-          -d "{\"video_url\": \"https://oops-games.com/${TARGET_PATH}/$ENCODED_VIDEO?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
+          -d "{\"video_url\": \"https://${{ steps.select_game.outputs.firebase_target }}.web.app/$ENCODED_VIDEO?t=$TS\", \"text\": \"Play today's $EXACT_TITLE challenge at oops-games.com/${TARGET_PATH}\", \"youtube_title\": \"$EXACT_TITLE\", \"target_channel\": \"all\"}" \
           https://hooks.zapier.com/hooks/catch/27231889/ujm5mjh/ || exit 1
