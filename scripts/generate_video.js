@@ -65,20 +65,13 @@ async function main() {
         ]
     };
 
-    let urlParam = 'standard';
+    let urlParam = FORMAT;
     let pool = ttsPools.standard;
     
     if (FORMAT === 'fail') {
-        urlParam = 'fail';
         pool = ttsPools.fail;
     } else if (FORMAT === 'interactive') {
-        urlParam = 'interactive';
         pool = ttsPools.interactive;
-    } else if (FORMAT === 'glitch') {
-        urlParam = 'glitch';
-        pool = ttsPools.standard;
-    } else if (FORMAT === 'split') {
-        urlParam = 'split';
     }
 
     let ttsText = pool[Math.floor(Math.random() * pool.length)];
@@ -287,25 +280,49 @@ async function main() {
                  cmd.outputOptions(['-y', '-map 0:v', '-c:v libx264', '-preset ultrafast', '-crf 18']);
             }
         } else {
-            cmd.input(BGM_PATH).inputOptions(['-stream_loop', '-1'])
-               .input(TTS_PATH)
-               .complexFilter([
-                   '[1:a]volume=0.3[bgm_quiet]',
-                   '[2:a]volume=1.5[tts_loud]',
-                   '[bgm_quiet][tts_loud]amix=inputs=2:duration=first:dropout_transition=3[audio_out]'
-               ])
-               .outputOptions([
-                   '-y',
-                   '-map 0:v',
-                   '-map [audio_out]',
-                   '-c:v libx264',
-                   '-pix_fmt yuv420p',
-                   '-preset ultrafast',
-                   '-crf 18',
-                   '-c:a aac',
-                   '-b:a 192k',
-                   '-shortest'
-               ]);
+            let hasTTS = false;
+            try {
+                if (fs.existsSync(TTS_PATH) && fs.statSync(TTS_PATH).size > 0) hasTTS = true;
+            } catch(e) {}
+
+            cmd.input(BGM_PATH).inputOptions(['-stream_loop', '-1']);
+
+            if (hasTTS) {
+                cmd.input(TTS_PATH)
+                   .complexFilter([
+                       '[1:a]volume=0.3[bgm_quiet]',
+                       '[2:a]volume=1.5[tts_loud]',
+                       '[bgm_quiet][tts_loud]amix=inputs=2:duration=first:dropout_transition=3[audio_out]'
+                   ])
+                   .outputOptions([
+                       '-y',
+                       '-map 0:v',
+                       '-map [audio_out]',
+                       '-c:v libx264',
+                       '-pix_fmt yuv420p',
+                       '-preset ultrafast',
+                       '-crf 18',
+                       '-c:a aac',
+                       '-b:a 192k',
+                       '-shortest'
+                   ]);
+            } else {
+                cmd.complexFilter([
+                       '[1:a]volume=0.5[bgm_quiet]'
+                   ])
+                   .outputOptions([
+                       '-y',
+                       '-map 0:v',
+                       '-map [bgm_quiet]',
+                       '-c:v libx264',
+                       '-pix_fmt yuv420p',
+                       '-preset ultrafast',
+                       '-crf 18',
+                       '-c:a aac',
+                       '-b:a 192k',
+                       '-shortest'
+                   ]);
+            }
         }
         
         cmd.save(FINAL_VIDEO)
